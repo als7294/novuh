@@ -452,6 +452,7 @@ function rerise() {
 }
 function reveal(delay) { root.style.setProperty('--rd', delay); rerise(); }
 function stop() {
+  window.__nvDone = true;
   cancelAnimationFrame(raf); running = false; ov.style.display = 'none';
   ov.style.opacity = ''; ov.style.transform = '';
   if (S) { S.smoke.clear(); S.fire.clear(); }
