@@ -133,6 +133,61 @@ function startBackground() {
 startBackground();
 
 /* =====================================================================
+   Hero logo particles: one 3D cloud orbiting the logo, split across a
+   canvas behind it and one in front so particles pass around the letters
+   ===================================================================== */
+function startParticles() {
+  const cvs = [...document.querySelectorAll('canvas.lg-pt')].filter((c) => !c.closest('x-dc'));
+  if (cvs.length < 2) { requestAnimationFrame(startParticles); return; }
+  const back = cvs.find((c) => c.dataset.layer === 'back'), front = cvs.find((c) => c.dataset.layer === 'front');
+  const bx = back.getContext('2d'), fx = front.getContext('2d');
+  const COLORS = ['127,232,255', '255,255,255', '255,160,110', '170,150,255'];
+  const P = Array.from({ length: innerWidth < 700 ? 60 : 120 }, () => ({
+    a: Math.random() * 6.283, r: 0.3 + Math.random() * 0.8, y: (Math.random() - 0.5) * 1.1,
+    sp: (0.06 + Math.random() * 0.22) * (Math.random() < 0.7 ? 1 : -1), vy: -(0.006 + Math.random() * 0.03),
+    s: 0.4 + Math.random() * 1.7, c: COLORS[Math.random() < 0.55 ? 0 : (Math.random() * 4) | 0], tw: Math.random() * 6.28,
+  }));
+  let W = 0, H = 0;
+  const size = () => { for (const c of [back, front]) { c.width = c.clientWidth * DPR; c.height = c.clientHeight * DPR; } W = back.clientWidth; H = back.clientHeight; };
+  size(); addEventListener('resize', size);
+  let last = performance.now();
+  const loop = (now) => {
+    const dt = Math.min(0.05, (now - last) / 1000), t = now / 1000; last = now;
+    requestAnimationFrame(loop);
+    if (back.getBoundingClientRect().bottom < 0) return; // hero scrolled away
+    for (const x of [bx, fx]) { x.setTransform(DPR, 0, 0, DPR, 0, 0); x.clearRect(0, 0, W, H); x.globalCompositeOperation = 'lighter'; }
+    const yaw = Math.sin((t / 12) * 6.283 - Math.PI / 2) * 0.5; // follows the logo's swing
+    for (const p of P) {
+      if (!RM) { p.a += p.sp * dt; p.y += p.vy * dt; if (p.y < -0.6) p.y = 0.6; }
+      const x3 = Math.cos(p.a) * p.r, z3 = Math.sin(p.a) * p.r;
+      const x = x3 * Math.cos(yaw) - z3 * Math.sin(yaw), z = x3 * Math.sin(yaw) + z3 * Math.cos(yaw);
+      const k = 1 / (1 - z * 0.38);
+      const sx = W / 2 + x * W * 0.4 * k, sy = H / 2 + p.y * H * 0.5 * k;
+      const ctx = z > 0 ? fx : bx;
+      const tw = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(t * 2.6 + p.tw));
+      const a = tw * (z > 0 ? 0.6 : 0.32), rad = p.s * k * 0.85;
+      ctx.fillStyle = `rgba(${p.c},${(a * 0.18).toFixed(3)})`; ctx.beginPath(); ctx.arc(sx, sy, rad * 4.5, 0, 6.283); ctx.fill();
+      ctx.fillStyle = `rgba(${p.c},${a.toFixed(3)})`; ctx.beginPath(); ctx.arc(sx, sy, rad, 0, 6.283); ctx.fill();
+    }
+  };
+  requestAnimationFrame(loop);
+}
+startParticles();
+
+/* Live wall: muted loops play only while on screen */
+function startLoops() {
+  const vids = [...document.querySelectorAll('video.lv-v')].filter((v) => !v.closest('x-dc'));
+  if (!vids.length) { requestAnimationFrame(startLoops); return; }
+  if (RM) return;
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    const v = e.target; v.muted = true;
+    if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+  }), { rootMargin: '200px' });
+  vids.forEach((v) => { v.muted = true; v.setAttribute('muted', ''); io.observe(v); });
+}
+startLoops();
+
+/* =====================================================================
    Launch intro: real-time 3D scene
    ===================================================================== */
 const ov = document.getElementById('nv-intro');

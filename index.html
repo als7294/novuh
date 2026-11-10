@@ -53,18 +53,34 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 .lg-bob{animation:lg-bob 6s ease-in-out infinite}
 @keyframes lg-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 .lg-spin{transform-style:preserve-3d;animation:lg-spin 12s ease-in-out infinite}
-@keyframes lg-spin{0%,100%{transform:rotateY(-26deg) rotateX(12deg) rotateZ(-2deg)}50%{transform:rotateY(26deg) rotateX(-8deg) rotateZ(2deg)}}
+@keyframes lg-spin{0%,100%{transform:rotateY(-30deg) rotateX(14deg) rotateZ(-2deg)}50%{transform:rotateY(30deg) rotateX(-10deg) rotateZ(2deg)}}
 .pl-float{animation:pl-float 14s ease-in-out infinite alternate}
 .pl-float2{animation:pl-float 10s ease-in-out infinite alternate-reverse}
 @keyframes pl-float{from{transform:translate(0,0)}to{transform:translate(18px,-22px)}}
 
 /* ---------- Cutout logo face: letters are windows into a nebula ---------- */
-.lg-cut{position:absolute;inset:0;transform:translateZ(.5px);background:url(./assets/logo-nebula.jpg) center/cover;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='510 480 1540 505' preserveAspectRatio='none'><path fill-rule='evenodd' d='M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z'/></svg>") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='510 480 1540 505' preserveAspectRatio='none'><path fill-rule='evenodd' d='M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z'/></svg>") 0 0/100% 100% no-repeat;box-shadow:inset 0 0 40px rgba(0,0,0,.6)}
+.lg-cut{position:absolute;inset:0;transform:translateZ(.5px);opacity:.82;mix-blend-mode:screen;background:url(./assets/logo-nebula.jpg) center/cover;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='510 480 1540 505' preserveAspectRatio='none'><path fill-rule='evenodd' d='M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z'/></svg>") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='510 480 1540 505' preserveAspectRatio='none'><path fill-rule='evenodd' d='M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z'/></svg>") 0 0/100% 100% no-repeat;box-shadow:inset 0 0 40px rgba(0,0,0,.6);background:url(./assets/logo-nebula.jpg) 0 50%/170% auto,url(./assets/logo-nebula.jpg) 100% 50%/260% auto;background-blend-mode:screen;animation:lg-neb 28s ease-in-out infinite alternate,lg-hue 14s ease-in-out infinite alternate}
+@keyframes lg-neb{0%{background-position:0% 30%,100% 70%}50%{background-position:60% 70%,30% 20%}100%{background-position:100% 40%,0% 60%}}
+@keyframes lg-hue{from{filter:hue-rotate(-18deg) saturate(.75) brightness(.8)}to{filter:hue-rotate(22deg) saturate(.85) brightness(.95)}}
+.lg-pt{position:absolute;left:-10%;right:-10%;top:-30%;bottom:-30%;width:120%;height:160%;pointer-events:none}
+.lg-pt[data-layer="front"]{z-index:2}
+/* ---------- Live media wall ---------- */
+.lv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.2vw,16px)}
+.lv{margin:0;position:relative;overflow:hidden;aspect-ratio:3/4;background:#0B0B0E;border:1px solid rgba(244,241,234,.08)}
+.lv:nth-child(even){transform:translateY(clamp(16px,3vw,48px))}
+.lv img,.lv video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .8s}
+.lv img{filter:saturate(.9) brightness(.92)}
+.lv:hover img,.lv:hover video{transform:scale(1.05);filter:none}
+@media (max-width:760px){.lv-grid{grid-template-columns:repeat(2,1fr)}}
+/* ---------- About: him in front of the wordmark ---------- */
+.ab-stage{position:relative;height:clamp(520px,64vw,940px);max-width:1500px;margin:0 auto}
+.ab-word{position:absolute;left:50%;top:14%;width:min(96vw,1460px);transform:translateX(-50%);fill:#FF6A2B;filter:drop-shadow(0 20px 60px rgba(255,106,43,.25))}
+.ab-cut{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);filter:drop-shadow(0 30px 40px rgba(0,0,0,.6));-webkit-mask-image:linear-gradient(180deg,#000 82%,transparent);mask-image:linear-gradient(180deg,#000 82%,transparent)}
 /* ---------- Shows ---------- */
 .sh-row{transition:background .2s ease}
 .sh-row:hover{background:rgba(255,106,43,0.08)}
 
-@media (prefers-reduced-motion: reduce){.hz-glow,.hz-flare,.hz-ring{animation:none}.nv-rise{animation:none;opacity:1}.gx-far,.gx-near,.gx-spin,.gx-neb-a,.gx-neb-b,.gx-neb-c,.lg-bob,.lg-spin,.pl-float,.pl-float2,.wv-on,.pl-ring-on,.pl-surf-on{animation:none}}
+@media (prefers-reduced-motion: reduce){.lg-cut,.hz-glow,.hz-flare,.hz-ring{animation:none}.nv-rise{animation:none;opacity:1}.gx-far,.gx-near,.gx-spin,.gx-neb-a,.gx-neb-b,.gx-neb-c,.lg-bob,.lg-spin,.pl-float,.pl-float2,.wv-on,.pl-ring-on,.pl-surf-on{animation:none}}
 </style>
 </helmet>
 <div style="width: 100%; min-height: 100vh; position: relative; background-color: #030304; color: #F4F1EA; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; line-height: 1.55">
@@ -82,6 +98,7 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
         <svg viewBox="510 480 1540 505" style="width: 120px; height: 40px; display: block" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
       </a>
       <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; font-size: 16px; font-weight: 600">
+        <a href="#live" style="text-decoration: none; padding: 12px 0">Live</a>
         <a href="#flight" style="text-decoration: none; padding: 12px 0">Shows</a>
         <a href="#crew" style="text-decoration: none; padding: 12px 0">About</a>
         <a href="#ground" style="text-decoration: none; padding: 12px 0">Booking</a>
@@ -94,28 +111,31 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 
     <div style="position: relative; flex: 1; width: 100%; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 24px clamp(16px, 4vw, 40px) 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; text-align: center">
       <div class="nv-rise d2" style="position: relative; width: min(100%, 1000px); perspective: 1400px">
-        <div aria-hidden="true" style="position: absolute; left: 10%; right: 10%; top: 30%; bottom: 10%; border-radius: 50%; background: radial-gradient(closest-side, rgba(127,232,255,0.30), rgba(127,232,255,0)); filter: blur(30px)"></div>
+        <div aria-hidden="true" style="position: absolute; left: 10%; right: 10%; top: 30%; bottom: 10%; border-radius: 50%; background: radial-gradient(closest-side, rgba(127,232,255,0.12), rgba(127,232,255,0)); filter: blur(30px)"></div>
+        <canvas class="lg-pt" data-layer="back" aria-hidden="true"></canvas>
         <div class="lg-bob" style="position: relative; width: 100%; aspect-ratio: 1540 / 505">
           <div class="lg-spin" style="position: absolute; inset: 0">
-            <sc-for list="{{layers}}" as="l" hint-placeholder-count="14">
+            <sc-for list="{{layers}}" as="l" hint-placeholder-count="26">
               <svg viewBox="510 480 1540 505" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ({{l.z}})"><path fill-rule="evenodd" fill="{{l.fill}}" stroke="{{l.stroke}}" stroke-width="5" d="{{wm}}"></path></svg>
             </sc-for>
             <div class="lg-cut" aria-hidden="true"></div>
-            <svg viewBox="510 480 1540 505" role="img" aria-label="NOVUH" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ(1px); filter: drop-shadow(0 0 5px rgba(127,232,255,0.85)) drop-shadow(0 0 26px rgba(127,232,255,0.4))">
+            <svg viewBox="510 480 1540 505" role="img" aria-label="NOVUH" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ(1px); filter: drop-shadow(0 0 4px rgba(127,232,255,0.45)) drop-shadow(0 0 22px rgba(127,232,255,0.16))">
               <defs>
                 
                 <linearGradient id="nvGlare" x1="0" y1="0" x2="1" y2="0.3"><stop offset="0.38" stop-color="#FFFFFF" stop-opacity="0"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.8"></stop><stop offset="0.62" stop-color="#FFFFFF" stop-opacity="0"></stop><animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;0.45;1" dur="6s" repeatCount="indefinite"></animateTransform></linearGradient>
               </defs>
-                            <path fill="none" stroke="#DDF6FF" stroke-width="6" d="{{wm}}"></path>
-              <path fill="none" stroke="url(#nvGlare)" stroke-width="7" d="{{wm}}"></path>
+                            <path fill="none" stroke="rgba(214,240,255,0.62)" stroke-width="5" d="{{wm}}"></path>
+              <path fill="none" stroke="url(#nvGlare)" stroke-width="5" opacity="0.6" d="{{wm}}"></path>
             </svg>
           </div>
         </div>
+        <canvas class="lg-pt" data-layer="front" aria-hidden="true"></canvas>
       </div>
 
-      <div class="nv-rise d3" style="position: relative; z-index: 2; margin-top: calc(-36px - clamp(10px, 2.4vw, 30px)); display: flex; flex-direction: column; align-items: center; gap: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.7), 0 8px 28px rgba(0,0,0,0.85)">
-        <h1 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5.5vw, 76px); line-height: 0.92; text-transform: uppercase">Bass music for the outer edge.</h1>
-        <p style="margin: 0; max-width: 560px; font-size: 19px; color: #C9C4BA">Orlando dubstep producer and DJ. Heavy, bouncy, futuristic bass, launched straight into orbit.</p>
+      <div class="nv-rise d3" style="position: relative; z-index: 2; margin-top: calc(-36px - clamp(10px, 2.4vw, 30px)); display: flex; flex-direction: column; align-items: center; gap: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 10px 32px rgba(0,0,0,0.95)">
+        <div aria-hidden="true" style="position: absolute; left: -12%; right: -12%; top: -38%; bottom: -30%; z-index: -1; background: radial-gradient(closest-side, rgba(3,3,4,0.92), rgba(3,3,4,0.6) 55%, rgba(3,3,4,0)); pointer-events: none"></div>
+        <h1 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5.5vw, 76px); line-height: 0.92; text-transform: uppercase; color: #FFFFFF">Bass music for the outer edge.</h1>
+        <p style="margin: 0; max-width: 560px; font-size: 19px; color: #E4DFD5">Orlando dubstep producer and DJ. Heavy, bouncy, futuristic bass, launched straight into orbit.</p>
       </div>
       <div class="nv-rise d4" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
         <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #030304; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Listen on Spotify</a>
@@ -124,10 +144,18 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
     </div>
   </section>
 
-  <section aria-label="Live visuals" style="position: relative; overflow: hidden; min-height: 480px">
-    <img src="./assets/700965a6e2411c5c31618b7b2408ba24.jpg" alt="The neon NOVUH wordmark hovering over the lunar surface as meteors fall" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%">
-    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 200px; background: linear-gradient(180deg, rgba(3,3,4,0) 0%, #030304 100%)"></div>
-    <div style="position: absolute; left: 0; right: 0; top: 0; height: 160px; background: linear-gradient(0deg, rgba(3,3,4,0) 0%, #030304 100%)"></div>
+  <section id="live" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px) clamp(24px, 4vw, 48px); display: flex; flex-direction: column; gap: 32px">
+    <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Live</h2>
+    <div class="lv-grid">
+      <figure class="lv"><video class="lv-v" src="./assets/loops/decks.mp4" poster="./assets/loops/decks.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH mixing on Pioneer decks"></video></figure>
+      <figure class="lv"><img src="./assets/live/green2.jpg" alt="NOVUH crouched in the Vanguard hallway in Orlando" loading="lazy"></figure>
+      <figure class="lv"><video class="lv-v" src="./assets/loops/crowd.mp4" poster="./assets/loops/crowd.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH silhouetted at the decks facing the crowd"></video></figure>
+      <figure class="lv"><img src="./assets/live/green1.jpg" alt="NOVUH under green and blue lasers" loading="lazy"></figure>
+      <figure class="lv"><img src="./assets/live/purple1.jpg" alt="NOVUH with hands up behind the decks in purple light" loading="lazy"></figure>
+      <figure class="lv"><video class="lv-v" src="./assets/loops/stage.mp4" poster="./assets/loops/stage.jpg" muted loop playsinline preload="metadata" aria-label="Stage lights sweeping the room"></video></figure>
+      <figure class="lv"><img src="./assets/live/green3.jpg" alt="NOVUH at the decks under club lights" loading="lazy"></figure>
+      <figure class="lv"><video class="lv-v" src="./assets/loops/room.mp4" poster="./assets/loops/room.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH at the decks facing a packed room"></video></figure>
+    </div>
   </section>
 
   <section id="flight" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 32px">
@@ -178,13 +206,14 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
     </div>
   </section>
 
-  <section id="crew" style="max-width: 1360px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 4vw, 40px) clamp(64px, 8vw, 112px); display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
-    <div style="flex: 1 1 520px">
-      <img src="./assets/65750edb3bfbcc8eefa81fc45e4957da.jpg" alt="NOVUH behind Pioneer decks, pointing at the crowd under red and blue stage light" style="width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 55% 30%; display: block">
+  <section id="crew" style="position: relative; overflow: hidden; padding-top: clamp(48px, 6vw, 80px)">
+    <div class="ab-stage">
+      <svg class="ab-word" viewBox="510 480 1540 505" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
+      <img class="ab-cut" src="./assets/novuh-cutout.png" alt="NOVUH standing in a black tee and camo cargos" loading="lazy">
     </div>
-    <div style="flex: 1 1 380px; display: flex; flex-direction: column; gap: 20px">
-      <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5vw, 72px); line-height: 0.92; text-transform: uppercase">Sets built like journeys</h2>
-      <p style="margin: 0; color: #C9C4BA">Born in Florida and based in Orlando, NOVUH makes dubstep and bass music rooted in space exploration and adventure, and plays Central Florida lineups and B2B sets with local peers. Influences: Subtronics, Virtual Riot, Jessica Audiffred, Monxx and the underground dubstep scene.</p>
+    <div style="position: relative; max-width: 1360px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px) clamp(64px, 8vw, 112px); display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-start">
+      <h2 style="flex: 1 1 380px; margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5vw, 72px); line-height: 0.92; text-transform: uppercase">Sets built like journeys</h2>
+      <p style="flex: 1 1 420px; margin: 0; color: #C9C4BA">Born in Florida and based in Orlando, NOVUH makes dubstep and bass music rooted in space exploration and adventure, and plays Central Florida lineups and B2B sets with local peers. Influences: Subtronics, Virtual Riot, Jessica Audiffred, Monxx and the underground dubstep scene.</p>
     </div>
   </section>
 
@@ -220,13 +249,13 @@ class Component extends DCLogic {
   renderVals() {
     const accent = this.props.accent ?? '#FF6A2B';
     const layers = [];
-    for (let i = 14; i >= 1; i--) {
-      const k = i / 14;
-      const shade = Math.round(58 - 44 * k);
+    for (let i = 26; i >= 1; i--) {
+      const k = i / 26;
+      const shade = Math.round(62 - 50 * k);
       layers.push({
-        z: (-i * 2.5) + 'px',
-        fill: 'rgb(' + Math.round(shade * 0.75) + ',' + shade + ',' + Math.round(shade * 1.3) + ')',
-        stroke: i === 14 ? 'rgba(127,232,255,0.7)' : 'none'
+        z: (-i * 2.6) + 'px',
+        fill: 'rgba(' + Math.round(shade * 0.7) + ',' + Math.round(shade * 0.9) + ',' + Math.round(shade * 1.25) + ',0.82)',
+        stroke: i === 26 ? 'rgba(127,232,255,0.3)' : (i % 6 === 0 ? 'rgba(127,232,255,0.07)' : 'none')
       });
     }
 
@@ -241,6 +270,6 @@ class Component extends DCLogic {
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./space.js?v=5"></script>
+<script type="module" src="./space.js?v=7"></script>
 </body>
 </html>
