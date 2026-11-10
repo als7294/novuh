@@ -69,7 +69,7 @@ void main(){
   /* planet limb at the foot of the hero, sunrise on the edge */
   float k=1.-smoothstep(0.,uHero*.8,uScroll);
   float R=2.6*res.y;
-  float limbY=res.y-(uHero-140.*uPx-uScroll);
+  float limbY=res.y-(uHero-36.*uPx-uScroll);
   vec2 c=vec2(res.x*.5-par.x*14.*uPx,limbY-R);
   float e=length(fc-c)-R;
   float inside=1.-smoothstep(-1.2*uPx,1.2*uPx,e);
@@ -80,15 +80,15 @@ void main(){
   float halo=exp(-eo/(.007*res.y))*.7+exp(-eo/(.05*res.y))*.18+exp(-eo/(.2*res.y))*.03;
   float rim=exp(-abs(e)/(1.1*uPx));
   vec2 surf=(fc-c)/res.y;
-  float inner=exp(min(e,0.)/(.045*res.y));
+  float inner=exp(min(e,0.)/(.018*res.y));
   float clouds=fbm(surf*vec2(7.,26.)+vec2(uTime*.004,0.));
-  vec3 planet=vec3(.003,.005,.010)+vec3(.05,.11,.22)*inner*(.35+clouds)*(.3+wx*1.2);
-  planet+=vec3(1.,.6,.3)*exp(min(e,0.)/(.006*res.y))*wx*.35;
-  vec3 limb=atm*halo*(.22+.95*wx)+mix(vec3(.55,.75,1.),vec3(1.,.85,.65),wx)*rim;
+  vec3 planet=vec3(.002,.003,.006)+vec3(.04,.09,.18)*inner*(.35+clouds)*(.3+wx);
+  planet+=vec3(1.,.6,.3)*exp(min(e,0.)/(.004*res.y))*wx*.3;
+  vec3 limb=atm*halo*(.22+.95*wx)*(1.-inside)+mix(vec3(.55,.75,1.),vec3(1.,.85,.65),wx)*rim;
   float sy=c.y+sqrt(max(R*R-(sunX-c.x)*(sunX-c.x),0.))+1.5*uPx;
   vec2 sd=fc-vec2(sunX,sy);
   float sun=exp(-length(sd)/(.005*res.y))*2.+exp(-length(sd)/(.04*res.y))*.22;
-  sun+=exp(-abs(sd.y)/(1.2*uPx))*exp(-abs(sd.x)/(.32*res.x))*.7;
+  sun+=exp(-abs(sd.y)/(1.2*uPx))*exp(-abs(sd.x)/(.09*res.x))*.45;
   vec3 space=col+st*(1.-inside*k);
   vec3 outc=mix(space,planet,inside*k)+(limb+vec3(1.,.84,.68)*sun)*k;
   outc=1.-exp(-outc*1.1);
