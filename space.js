@@ -186,11 +186,9 @@ function startLoops() {
   vids.forEach((v) => { v.muted = true; v.setAttribute('muted', ''); io.observe(v); });
   // accordion: hover picks a slice, otherwise it cycles on its own
   const tiles = [...document.querySelectorAll('.lv')].filter((t) => !t.closest('x-dc'));
-  let idx = 0, hover = false;
-  const pick = (i) => { idx = i; tiles.forEach((t, k) => t.classList.toggle('on', k === i)); };
-  tiles.forEach((t, i) => { t.addEventListener('mouseenter', () => { hover = true; pick(i); }); t.addEventListener('click', () => pick(i)); });
-  tiles[0] && tiles[0].parentElement.addEventListener('mouseleave', () => { hover = false; });
-  setInterval(() => { if (!hover && !document.hidden) pick((idx + 1) % tiles.length); }, 3400);
+  const pick = (i) => { tiles.forEach((t, k) => t.classList.toggle('on', k === i)); };
+  // the open slice stays open until another one is hovered (or tapped)
+  tiles.forEach((t, i) => { t.addEventListener('mouseenter', () => pick(i)); t.addEventListener('click', () => pick(i)); });
   // meteor band: lazy-load and play only near the viewport
   const mv = [...document.querySelectorAll('video.mt-v')].find((v) => !v.closest('x-dc'));
   if (mv) {
@@ -584,3 +582,205 @@ function start() {
 
 window.nvIntro = start;
 start();
+
+/* =====================================================================
+   Hero logo as a real extruded 3D mesh (the SVG stack stays as fallback)
+   ===================================================================== */
+function wordmarkShapes() {
+  // parse the wordmark path (absolute M/L/H/V/A/Z only) into polygons; arcs are sampled
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg'); svg.style.cssText = 'position:absolute;width:0;height:0'; document.body.appendChild(svg);
+  const tok = NV_WM.match(/[MLHVAZ]|-?\d*\.?\d+/g);
+  const polys = []; let cur = null, x = 0, y = 0, i = 0;
+  const num = () => parseFloat(tok[i++]);
+  while (i < tok.length) {
+    const c = tok[i++];
+    if (c === 'M') { x = num(); y = num(); cur = [[x, y]]; polys.push(cur); }
+    else if (c === 'L') { x = num(); y = num(); cur.push([x, y]); }
+    else if (c === 'H') { x = num(); cur.push([x, y]); }
+    else if (c === 'V') { y = num(); cur.push([x, y]); }
+    else if (c === 'A') {
+      const a = [num(), num(), num(), num(), num(), num(), num()];
+      const p = document.createElementNS(ns, 'path'); p.setAttribute('d', `M${x} ${y}A${a.join(' ')}`); svg.appendChild(p);
+      const L = p.getTotalLength();
+      for (let k = 1; k <= 10; k++) { const q = p.getPointAtLength((L * k) / 10); cur.push([q.x, q.y]); }
+      x = a[5]; y = a[6];
+    }
+  }
+  svg.remove();
+  const inside = (pt, poly) => { let c = false; for (let a = 0, b = poly.length - 1; a < poly.length; b = a++) {
+    const [xi, yi] = poly[a], [xj, yj] = poly[b];
+    if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < ((xj - xi) * (pt[1] - yi)) / (yj - yi) + xi) c = !c; } return c; };
+  const toV = (poly) => poly.map(([px, py]) => new THREE.Vector2(px, -py));
+  const shapes = [];
+  polys.forEach((poly, k) => {
+    if (polys.some((o, j) => j !== k && inside(poly[0], o))) return; // a hole, attached below
+    const sh = new THREE.Shape(toV(poly));
+    polys.forEach((h, j) => { if (j !== k && inside(h[0], poly)) sh.holes.push(new THREE.Path(toV(h))); });
+    shapes.push(sh);
+  });
+  return shapes;
+}
+
+function startLogo3D() {
+  if (RM) return;
+  const bob = [...document.querySelectorAll('.lg-bob')].find((x) => !x.closest('x-dc'));
+  if (!bob) { requestAnimationFrame(startLogo3D); return; }
+  let renderer;
+  try {
+    const cv = document.createElement('canvas'); cv.className = 'lg-3d'; cv.setAttribute('aria-hidden', 'true');
+    bob.appendChild(cv);
+    renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(DPR, 2)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(20, 1, 10, 20000);
+
+    const geo = new THREE.ExtrudeGeometry(wordmarkShapes(), { depth: 70, curveSegments: 6, bevelEnabled: true, bevelThickness: 7, bevelSize: 5, bevelSegments: 3 });
+    geo.computeBoundingBox(); const bb = geo.boundingBox; const c = new THREE.Vector3(); bb.getCenter(c); geo.translate(-c.x, -c.y, -c.z);
+    const W = bb.max.x - bb.min.x, H = bb.max.y - bb.min.y;
+
+    const neb = new THREE.TextureLoader().load('./assets/logo-nebula.jpg'); neb.colorSpace = THREE.SRGBColorSpace; neb.wrapS = neb.wrapT = THREE.MirroredRepeatWrapping;
+    const capU = { map: { value: neb }, uT: { value: 0 }, uSize: { value: new THREE.Vector2(W, H) } };
+    const caps = new THREE.ShaderMaterial({
+      uniforms: capU, transparent: true,
+      vertexShader: `uniform vec2 uSize; varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+        void main(){ vUv = position.xy / uSize + .5; vec4 mv = modelViewMatrix * vec4(position,1.); vN = normalMatrix*normal; vV = -mv.xyz; gl_Position = projectionMatrix * mv; }`,
+      fragmentShader: `uniform sampler2D map; uniform float uT; varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+        vec3 hue(vec3 c, float a){ const vec3 k = vec3(.57735); float ca = cos(a); return c*ca + cross(k,c)*sin(a) + k*dot(k,c)*(1.-ca); }
+        void main(){
+          vec2 uv = vUv*vec2(1., .33) + vec2(uT*.012, .33 + sin(uT*.07)*.04);
+          vec3 a = texture2D(map, uv).rgb, b = texture2D(map, uv*1.7 + vec2(-uT*.02, uT*.008)).rgb;
+          vec3 col = hue(1. - (1.-a)*(1.-b*.8), sin(uT*.15)*.35) * .95;
+          float glare = smoothstep(.06, 0., abs(vUv.x - fract(uT*.08)*1.6 + .3 - vUv.y*.35));
+          col += vec3(.75,.9,1.) * glare * .22;
+          float fr = pow(1. - abs(dot(normalize(vN), normalize(vV))), 2.);
+          col = col * 1.35 + fr*vec3(.3,.6,.8)*.35;
+          gl_FragColor = vec4(pow(max(col, 0.), vec3(1./2.2)), .92); // shader skips three's output encode, so do it here
+        }`,
+    });
+    const sides = new THREE.MeshStandardMaterial({ color: 0x8ea4c4, metalness: 0.7, roughness: 0.28, emissive: 0x0c1626 });
+    const mesh = new THREE.Mesh(geo, [caps, sides]);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), new THREE.LineBasicMaterial({ color: 0xbff4ff, transparent: true, opacity: 0.85 }));
+    const logo = new THREE.Group(); logo.add(mesh, edges); scene.add(logo);
+
+    scene.add(new THREE.HemisphereLight(0x8fb6ff, 0x0a0a14, 0.9));
+    const key = new THREE.DirectionalLight(0xbfe9ff, 3.2); key.position.set(-600, 900, 1200); scene.add(key);
+    const warm = new THREE.DirectionalLight(0xff9a5c, 1.4); warm.position.set(1200, -300, 400); scene.add(warm);
+    const sweep = new THREE.PointLight(0x7fe8ff, 4, 0, 0); scene.add(sweep);
+
+    const size = () => {
+      const w = cv.clientWidth, h = cv.clientHeight; renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      // fit the wordmark to ~84% of the canvas width
+      const dist = (W / 0.84 / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / camera.aspect;
+      camera.position.set(0, 0, dist); camera.lookAt(0, 0, 0);
+    };
+    size(); addEventListener('resize', size);
+    const mt = new THREE.Vector2(), ms = new THREE.Vector2();
+    addEventListener('pointermove', (e) => mt.set(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5));
+    const t0 = performance.now();
+    bob.classList.add('lg-has3d');
+    const loop = (now) => {
+      requestAnimationFrame(loop);
+      if (bob.getBoundingClientRect().bottom < 0) return;
+      const t = (now - t0) / 1000; ms.lerp(mt, 0.05);
+      logo.rotation.y = Math.sin(t * 0.45) * 0.34 + ms.x * 0.35;
+      logo.rotation.x = Math.sin(t * 0.31) * 0.1 + ms.y * 0.22;
+      logo.rotation.z = Math.sin(t * 0.23) * 0.02;
+      sweep.position.set(Math.sin(t * 0.6) * W * 0.7, Math.cos(t * 0.4) * H * 0.8, 500);
+      capU.uT.value = t;
+      renderer.render(scene, camera);
+    };
+    requestAnimationFrame(loop);
+  } catch (e) { bob.classList.remove('lg-has3d'); }
+}
+startLogo3D();
+
+/* =====================================================================
+   About: shader glitch-in (tear bands, block corruption, RGB split,
+   scanlines, dithered flicker) resolving into the real image
+   ===================================================================== */
+const GLITCH_FRAG = /* glsl */`
+uniform sampler2D map; uniform float uT; uniform float uSeed; uniform vec2 uRes; uniform float uPad;
+varying vec2 vUv;
+float h1(float n){ return fract(sin(n * 91.345 + uSeed) * 43758.5453); }
+float h2(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233)) + uSeed) * 43758.5453); }
+vec4 tap(vec2 uv){ uv = (uv - vec2(uPad, 0.)) / vec2(1. - 2. * uPad, 1.);
+  if (uv.x < 0. || uv.x > 1. || uv.y < 0. || uv.y > 1.) return vec4(0.); return texture2D(map, uv); }
+void main(){
+  float k = 1. - smoothstep(.05, 1., uT);              // glitch amount, 1 -> 0
+  float tq = floor(uT * 30.);                          // jumps at 30fps
+  vec2 uv = vUv;
+  float rows = mix(10., 46., h1(tq));
+  float band = floor(uv.y * rows);
+  float tear = step(1. - .6 * k, h1(band * 1.7 + tq * 3.1)) * (h1(band + tq * 7.) - .5) * .22 * k;
+  uv.x += tear;
+  vec2 blk = floor(uv * vec2(18., 34.));
+  if (h2(blk + tq) > 1. - .16 * k) uv += (vec2(h2(blk + 1.3), h2(blk + 7.1)) - .5) * vec2(.1, .03) * k;
+  float ca = (.014 + .01 * h1(tq * 2.3)) * k;
+  vec4 cr = tap(uv + vec2(ca, 0.)), cg = tap(uv), cb = tap(uv - vec2(ca, ca * .3));
+  float a = max(cg.a, max(cr.a, cb.a) * k);
+  vec3 col = vec3(cr.r * cr.a, cg.g * cg.a, cb.b * cb.a);
+  col *= mix(1., .82 + .18 * sin(vUv.y * uRes.y * 1.6), k);           // scanlines
+  col += (h2(floor(vUv * uRes / 2.) + tq) - .5) * .35 * k * a;          // noise
+  float appear = smoothstep(0., .3, uT);
+  float dith = step(h2(floor(vUv * uRes / 3.) + tq * 1.3), appear * 1.2);
+  float flick = step(.35 * k, h1(tq * 1.9 + 4.));
+  a *= mix(1., dith * flick, k);
+  gl_FragColor = vec4(col * mix(1., dith * flick, k), a);
+}`;
+
+function glitchIn(el, source, delay, dur, cssFilter) {
+  return new Promise((resolve) => setTimeout(() => {
+    const stage = el.closest('.ab-stage');
+    const r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    const PAD = 0.14, w = r.width / (1 - 2 * PAD), h = r.height;
+    const cv = document.createElement('canvas');
+    cv.style.cssText = `position:absolute;left:${r.left - sr.left - r.width * PAD / (1 - 2 * PAD)}px;top:${r.top - sr.top}px;width:${w}px;height:${h}px;z-index:4;pointer-events:none;filter:${cssFilter || 'none'}`;
+    stage.appendChild(cv);
+    let rd;
+    try {
+      rd = new THREE.WebGLRenderer({ canvas: cv, alpha: true, premultipliedAlpha: false, antialias: false });
+      rd.setPixelRatio(Math.min(DPR, 2)); rd.setSize(w, h, false);
+    } catch (e) { cv.remove(); el.classList.add('ab-show'); resolve(); return; }
+    // upload via a 2D canvas: some decoders (AVIF here) don't reach WebGL straight from an <img>
+    const cc = document.createElement('canvas'); cc.width = source.naturalWidth || source.width; cc.height = source.naturalHeight || source.height;
+    cc.getContext('2d').drawImage(source, 0, 0, cc.width, cc.height);
+    const tex = new THREE.Texture(cc); tex.needsUpdate = true; // raw sRGB in, raw sRGB out (no conversion) keeps the orange orange
+    const u = { map: { value: tex }, uT: { value: 0 }, uSeed: { value: Math.random() * 100 }, uRes: { value: new THREE.Vector2(w, h) }, uPad: { value: PAD } };
+    const sc = new THREE.Scene(), cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    sc.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({ uniforms: u, transparent: true,
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }', fragmentShader: GLITCH_FRAG })));
+    const t0 = performance.now();
+    const loop = (now) => {
+      const t = (now - t0) / 1000 / dur; u.uT.value = Math.min(1, t); rd.render(sc, cam);
+      if (t < 1) { requestAnimationFrame(loop); return; }
+      el.classList.add('ab-show');
+      requestAnimationFrame(() => { cv.remove(); rd.dispose(); rd.forceContextLoss(); tex.dispose(); resolve(); });
+    };
+    requestAnimationFrame(loop);
+  }, delay));
+}
+
+function startAboutGlitch() {
+  const stage = [...document.querySelectorAll('.ab-stage')].find((x) => !x.closest('x-dc'));
+  if (!stage) { requestAnimationFrame(startAboutGlitch); return; }
+  const word = stage.querySelector('.ab-word'), cut = stage.querySelector('.ab-cut');
+  cut.loading = 'eager'; // small AVIF; fetch now so he glitches in with the wordmark, not after
+  if (RM) { word.classList.add('ab-show'); cut.classList.add('ab-show'); return; }
+  let done = false;
+  new IntersectionObserver((es, io) => es.forEach((e) => {
+    if (done || !e.isIntersecting || e.intersectionRatio < 0.3) return;
+    done = true; io.disconnect();
+    const r = word.getBoundingClientRect();
+    const svgImg = new Image();
+    svgImg.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="510 480 1540 505" width="${Math.round(r.width * 2)}" height="${Math.round(r.height * 2)}"><path fill="#FF6A2B" fill-rule="evenodd" d="${NV_WM}"/></svg>`);
+    const ready = (img) => (img.complete && img.naturalWidth ? Promise.resolve() : new Promise((res) => { img.onload = res; img.onerror = res; }));
+    Promise.all([ready(svgImg), ready(cut)]).then(() => {
+      glitchIn(word, svgImg, 0, 1.1);
+      glitchIn(cut, cut, 0, 1.15, getComputedStyle(cut).filter);
+    });
+  }), { threshold: [0, 0.3] }).observe(stage);
+}
+startAboutGlitch();
