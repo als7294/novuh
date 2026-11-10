@@ -241,6 +241,7 @@ function startStories(tiles, pick) {
   }
   grid.addEventListener('click', (e) => {
     if (held) { held = false; return; }               // the release after a hold shouldn't also step
+    if (swiped) { swiped = false; return; }           // nor should the tap a swipe can synthesise
     const r = grid.getBoundingClientRect();
     show(e.clientX - r.left < r.width * 0.33 ? i - 1 : i + 1);
   });
@@ -252,6 +253,13 @@ function startStories(tiles, pick) {
     grid.classList.remove('hold'); const v = vid(i); if (v && visible) v.play().catch(() => {}); if (visible) run(Math.max(400, left)); };
   ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => grid.addEventListener(ev, release));
   grid.addEventListener('contextmenu', (e) => e.preventDefault());
+  // swipe left = next, swipe right = previous (vertical drags still scroll the page: touch-action pan-y)
+  let sx = 0, sy = 0, swiped = false;
+  grid.addEventListener('touchstart', (e) => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; swiped = false; }, { passive: true });
+  grid.addEventListener('touchend', (e) => {
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) { swiped = true; clearTimeout(holdT); grid.classList.remove('hold'); show(dx < 0 ? i + 1 : i - 1); }
+  }, { passive: true });
   // only advance while it's actually on screen
   new IntersectionObserver((es) => es.forEach((e) => {
     visible = e.isIntersecting;
