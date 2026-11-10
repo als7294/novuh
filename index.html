@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="NOVUH — Orlando dubstep producer and DJ. Bass music for the outer edge.">
+<meta property="og:title" content="NOVUH">
+<meta property="og:description" content="Bass music for the outer edge.">
+<meta property="og:image" content="assets/700965a6e2411c5c31618b7b2408ba24.jpg">
+<script>document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvStarted){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
+<title>NOVUH — Full site</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#030304}
+a{color:#F4F1EA}a:hover{color:#FF6A2B}
+.stars{background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff 50%,transparent 52%),radial-gradient(1px 1px at 33% 72%,#fff 50%,transparent 52%),radial-gradient(1.6px 1.6px at 58% 9%,#fff 50%,transparent 52%),radial-gradient(1px 1px at 81% 41%,#fff 50%,transparent 52%),radial-gradient(1.3px 1.3px at 92% 83%,#fff 50%,transparent 52%),radial-gradient(1px 1px at 6% 61%,#fff 50%,transparent 52%),radial-gradient(1px 1px at 45% 44%,rgba(255,255,255,.7) 50%,transparent 52%),radial-gradient(1.4px 1.4px at 70% 66%,#fff 50%,transparent 52%),radial-gradient(1px 1px at 24% 93%,rgba(255,255,255,.6) 50%,transparent 52%),radial-gradient(1px 1px at 63% 29%,rgba(255,255,255,.6) 50%,transparent 52%);background-size:420px 420px}
+
+/* ---------- Reveal (delay set by the intro script via --rd) ---------- */
+.nv-rise{opacity:0;animation:nv-rise 1.1s cubic-bezier(.16,.8,.2,1) forwards}
+@keyframes nv-rise{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+.d2{animation-delay:var(--rd,0s)}.d3{animation-delay:calc(var(--rd,0s) + .18s)}.d4{animation-delay:calc(var(--rd,0s) + .34s)}
+
+/* ---------- Hero horizon ---------- */
+.hz-glow{animation:hz-pulse 7s ease-in-out infinite alternate}
+@keyframes hz-pulse{from{opacity:.75}to{opacity:1}}
+.hz-flare{animation:hz-flare 9s ease-in-out infinite alternate}
+@keyframes hz-flare{from{transform:translateX(-50%) scaleX(.85);opacity:.6}to{transform:translateX(-50%) scaleX(1.1);opacity:1}}
+.hz-ring{animation:gx-spin 90s linear infinite}
+
+/* ---------- Galaxy background ---------- */
+.gx-far{opacity:.7;animation:gx-drift 180s linear infinite}
+@keyframes gx-drift{to{transform:translate(420px,-420px)}}
+.gx-near{background-size:260px 260px;animation:gx-drift2 110s linear infinite,gx-twinkle 3.5s ease-in-out infinite alternate}
+@keyframes gx-drift2{to{transform:translate(260px,-260px)}}
+@keyframes gx-twinkle{from{opacity:.3}to{opacity:.95}}
+.gx-spin{animation:gx-spin 160s linear infinite}
+@keyframes gx-spin{to{transform:rotate(360deg)}}
+.gx-neb-a{animation:gx-float 38s ease-in-out infinite alternate}
+.gx-neb-b{animation:gx-float 52s ease-in-out infinite alternate-reverse}
+.gx-neb-c{animation:gx-float 46s ease-in-out infinite alternate}
+@keyframes gx-float{from{transform:translate(0,0) scale(1)}to{transform:translate(140px,-70px) scale(1.18)}}
+
+/* ---------- 3D logo + planets ---------- */
+.lg-bob{animation:lg-bob 6s ease-in-out infinite}
+@keyframes lg-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.lg-spin{transform-style:preserve-3d;animation:lg-spin 12s ease-in-out infinite}
+@keyframes lg-spin{0%,100%{transform:rotateY(-26deg) rotateX(12deg) rotateZ(-2deg)}50%{transform:rotateY(26deg) rotateX(-8deg) rotateZ(2deg)}}
+.pl-float{animation:pl-float 14s ease-in-out infinite alternate}
+.pl-float2{animation:pl-float 10s ease-in-out infinite alternate-reverse}
+@keyframes pl-float{from{transform:translate(0,0)}to{transform:translate(18px,-22px)}}
+
+/* ---------- Player ---------- */
+.wv{transform-origin:50% 50%}
+.wv-on{animation:wv .8s ease-in-out infinite alternate}
+@keyframes wv{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+.pl-ring-on{animation:pl-orbit 6s linear infinite}
+@keyframes pl-orbit{to{transform:rotate(360deg)}}
+.pl-surf-on{animation:pl-surf 8s linear infinite}
+@keyframes pl-surf{to{transform:translateX(-50%)}}
+.tx-row:hover{background:rgba(244,241,234,0.05)!important}
+
+/* ---------- Shows ---------- */
+.sh-row{transition:background .2s ease}
+.sh-row:hover{background:rgba(255,106,43,0.08)}
+
+@media (prefers-reduced-motion: reduce){.hz-glow,.hz-flare,.hz-ring{animation:none}.nv-rise{animation:none;opacity:1}.gx-far,.gx-near,.gx-spin,.gx-neb-a,.gx-neb-b,.gx-neb-c,.lg-bob,.lg-spin,.pl-float,.pl-float2,.wv-on,.pl-ring-on,.pl-surf-on{animation:none}}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; position: relative; background-color: #030304; color: #F4F1EA; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; line-height: 1.55">
+
+  <div aria-hidden="true" style="position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none">
+    <canvas id="nv-bg" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block"></canvas>
+  </div>
+
+  <div style="position: relative; z-index: 1">
+
+
+  <header style="position: relative; z-index: 3">
+    <nav aria-label="Main" style="max-width: 1360px; margin: 0 auto; padding: 8px clamp(16px, 4vw, 40px); min-height: 80px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+      <a href="#top" aria-label="NOVUH home" style="display: block; color: #F4F1EA">
+        <svg viewBox="510 480 1540 505" style="width: 120px; height: 40px; display: block" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
+      </a>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; font-size: 16px; font-weight: 600">
+        <a href="#music" style="text-decoration: none; padding: 12px 0">Music</a>
+        <a href="#flight" style="text-decoration: none; padding: 12px 0">Shows</a>
+        <a href="#crew" style="text-decoration: none; padding: 12px 0">About</a>
+        <a href="#ground" style="text-decoration: none; padding: 12px 0">Booking</a>
+        <button type="button" onClick="{{replay}}" aria-label="Replay launch intro" style="background: transparent; border: 0; color: #A39E94; font: inherit; min-height: 44px; padding: 0; cursor: pointer">↺</button>
+        <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #030304; padding: 0 20px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 800">Listen</a>
+      </div>
+    </nav>
+  </header>
+
+  <section id="top" style="position: relative; overflow: hidden; min-height: max(720px, 100vh); display: flex; flex-direction: column">
+
+    <div style="position: relative; flex: 1; width: 100%; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 24px clamp(16px, 4vw, 40px) 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; text-align: center">
+      <div class="nv-rise d2" style="position: relative; width: min(100%, 1000px); perspective: 1400px">
+        <div aria-hidden="true" style="position: absolute; left: 10%; right: 10%; top: 30%; bottom: 10%; border-radius: 50%; background: radial-gradient(closest-side, rgba(127,232,255,0.30), rgba(127,232,255,0)); filter: blur(30px)"></div>
+        <div class="lg-bob" style="position: relative; width: 100%; aspect-ratio: 1540 / 505">
+          <div class="lg-spin" style="position: absolute; inset: 0">
+            <sc-for list="{{layers}}" as="l" hint-placeholder-count="14">
+              <svg viewBox="510 480 1540 505" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ({{l.z}})"><path fill-rule="evenodd" fill="{{l.fill}}" stroke="{{l.stroke}}" stroke-width="5" d="{{wm}}"></path></svg>
+            </sc-for>
+            <svg viewBox="510 480 1540 505" role="img" aria-label="NOVUH" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ(1px); filter: drop-shadow(0 0 16px rgba(127,232,255,0.6))">
+              <defs>
+                <linearGradient id="nvChrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset="0.4" stop-color="#C3D3E3"></stop><stop offset="0.5" stop-color="#55687D"></stop><stop offset="0.6" stop-color="#E2EEF8"></stop><stop offset="1" stop-color="#8CA0B5"></stop></linearGradient>
+                <linearGradient id="nvGlare" x1="0" y1="0" x2="1" y2="0.3"><stop offset="0.38" stop-color="#FFFFFF" stop-opacity="0"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.8"></stop><stop offset="0.62" stop-color="#FFFFFF" stop-opacity="0"></stop><animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;0.45;1" dur="6s" repeatCount="indefinite"></animateTransform></linearGradient>
+              </defs>
+              <path fill-rule="evenodd" fill="url(#nvChrome)" stroke="#7FE8FF" stroke-width="5" d="{{wm}}"></path>
+              <path fill-rule="evenodd" fill="url(#nvGlare)" d="{{wm}}"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="nv-rise d3" style="display: flex; flex-direction: column; align-items: center; gap: 16px">
+        <h1 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5.5vw, 76px); line-height: 0.92; text-transform: uppercase">Bass music for the outer edge.</h1>
+        <p style="margin: 0; max-width: 560px; font-size: 19px; color: #C9C4BA">Orlando dubstep producer and DJ Marc Velasquez. Every set is a mission: high-energy bass, bouncy flow and futuristic sound design.</p>
+      </div>
+      <div class="nv-rise d4" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+        <a href="#music" style="text-decoration: none; background: {{accent}}; color: #030304; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Play FUTC</a>
+        <a href="#flight" style="text-decoration: none; border: 1px solid rgba(244,241,234,0.5); font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">See shows</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="music" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
+    <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Transmissions</h2>
+
+    <div style="border: 1px solid rgba(244,241,234,0.16); background: rgba(8,8,10,0.86)">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px; padding: clamp(24px, 4vw, 48px); border-bottom: 1px solid rgba(244,241,234,0.12)">
+        <div aria-hidden="true" style="flex: 0 0 auto; position: relative; width: 260px; height: 260px; margin: 0 auto">
+          <div class="{{ringCls}}" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(244,241,234,0.3)">
+            <div style="position: absolute; left: 50%; top: -6px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #E8B04A; box-shadow: 0 0 12px #E8B04A"></div>
+          </div>
+          <div style="position: absolute; inset: 40px; border-radius: 50%; overflow: hidden; background: {{cur.planet}}; box-shadow: 0 0 60px {{cur.glow}}">
+            <div class="{{surfCls}}" style="position: absolute; left: 0; top: 0; width: 200%; height: 100%; background: repeating-linear-gradient(172deg, rgba(255,255,255,0.10) 0 5px, rgba(255,255,255,0) 5px 19px, rgba(0,0,0,0.12) 19px 26px, rgba(0,0,0,0) 26px 40px)"></div>
+            <div style="position: absolute; inset: 0; border-radius: 50%; box-shadow: inset -26px -22px 50px rgba(0,0,0,0.75), inset 10px 8px 24px rgba(255,255,255,0.18)"></div>
+          </div>
+        </div>
+
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-stretch: 62%; font-weight: 900; font-size: clamp(52px, 7vw, 100px); line-height: 0.9; text-transform: uppercase">{{cur.title}}</span>
+            <span style="font-size: 18px; color: #C9C4BA">{{cur.meta}} · {{cur.year}}</span>
+          </div>
+          <div aria-hidden="true" style="display: flex; align-items: center; gap: 3px; height: 88px">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="64">
+              <span class="{{b.cls}}" style="flex: 1 1 0; min-width: 2px; height: {{b.h}}; background: {{b.c}}; border-radius: 2px; animation-delay: {{b.d}}"></span>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <button type="button" onClick="{{prev}}" aria-label="Previous track" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(244,241,234,0.35); background: transparent; color: #F4F1EA; font-size: 16px; cursor: pointer">⏮</button>
+              <button type="button" onClick="{{toggle}}" aria-label="{{playAria}}" style="width: 64px; height: 64px; border-radius: 50%; border: 0; background: {{accent}}; color: #030304; font-size: 22px; font-weight: 900; cursor: pointer; box-shadow: 0 0 30px rgba(255,106,43,0.45)">{{playIcon}}</button>
+              <button type="button" onClick="{{next}}" aria-label="Next track" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(244,241,234,0.35); background: transparent; color: #F4F1EA; font-size: 16px; cursor: pointer">⏭</button>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 16px; font-weight: 600">
+              <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo">Spotify</a>
+              <a href="https://music.apple.com/us/artist/novuh/1496416154">Apple Music</a>
+              <a href="https://soundcloud.com/novuhmusic">SoundCloud</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div role="list" aria-label="Tracks" style="display: flex; flex-direction: column">
+        <sc-for list="{{tracks}}" as="t" hint-placeholder-count="11">
+          <div role="listitem">
+            <button type="button" class="tx-row" onClick="{{t.pick}}" disabled="{{t.locked}}" aria-pressed="{{t.active}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; width: 100%; min-height: 64px; padding: 12px clamp(16px, 4vw, 48px); box-sizing: border-box; background: {{t.bg}}; border: 0; border-bottom: 1px solid rgba(244,241,234,0.08); color: {{t.color}}; font: inherit; text-align: left; cursor: {{t.cursor}}">
+              <span aria-hidden="true" style="flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; background: {{t.planet}}; box-shadow: inset -4px -3px 6px rgba(0,0,0,0.6)"></span>
+              <span style="flex: 1 1 200px; font-stretch: 75%; font-weight: 800; font-size: 24px; text-transform: uppercase">{{t.title}}</span>
+              <span style="flex: 0 1 340px; font-size: 16px; color: #A39E94">{{t.meta}}</span>
+              <span style="width: 110px; text-align: right; font-size: 16px; font-weight: 600; color: {{t.statusColor}}">{{t.status}}</span>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Live visuals" style="position: relative; overflow: hidden; min-height: 480px">
+    <img src="./assets/700965a6e2411c5c31618b7b2408ba24.jpg" alt="The neon NOVUH wordmark hovering over the lunar surface as meteors fall" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%">
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 200px; background: linear-gradient(180deg, rgba(3,3,4,0) 0%, #030304 100%)"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 0; height: 160px; background: linear-gradient(0deg, rgba(3,3,4,0) 0%, #030304 100%)"></div>
+  </section>
+
+  <section id="flight" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 32px">
+    <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Shows</h2>
+
+    <div style="display: flex; flex-direction: column; border-top: 1px solid rgba(244,241,234,0.3)">
+      <div class="sh-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 24px 16px; margin: 0 -16px; border-bottom: 1px solid rgba(244,241,234,0.12)">
+        <div style="width: 210px; display: flex; align-items: baseline; gap: 10px">
+          <span style="font-stretch: 62%; font-weight: 900; font-size: 52px; line-height: 1; color: {{accent}}">APR</span>
+          <span style="font-size: 17px; color: #A39E94">2027</span>
+        </div>
+        <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-stretch: 75%; font-weight: 800; font-size: 28px; text-transform: uppercase; line-height: 1.1">Forbidden Kingdom</span>
+          <span style="font-size: 17px; color: #C9C4BA">NOVUH B2B Wohlsy · Central Florida Fairgrounds</span>
+        </div>
+        <a href="#ground" style="text-decoration: none; background: {{accent}}; color: #030304; font-weight: 800; padding: 0 24px; min-height: 48px; display: inline-flex; align-items: center; font-size: 17px">Tickets [LINK]</a>
+      </div>
+      <div class="sh-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 20px 16px; margin: 0 -16px; border-bottom: 1px solid rgba(244,241,234,0.12); color: #A39E94">
+        <div style="width: 210px; display: flex; align-items: baseline; gap: 10px">
+          <span style="font-stretch: 62%; font-weight: 900; font-size: 44px; line-height: 1; color: #D9D4CA">08</span>
+          <span style="font-size: 17px">Nov 2026</span>
+        </div>
+        <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-stretch: 75%; font-weight: 800; font-size: 24px; text-transform: uppercase; line-height: 1.1; color: #D9D4CA">Dirt Monkey + Ruvlo</span>
+          <span style="font-size: 17px">McQueens, Orlando</span>
+        </div>
+      </div>
+      <div class="sh-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 20px 16px; margin: 0 -16px; border-bottom: 1px solid rgba(244,241,234,0.12); color: #A39E94">
+        <div style="width: 210px; display: flex; align-items: baseline; gap: 10px">
+          <span style="font-stretch: 62%; font-weight: 900; font-size: 44px; line-height: 1; color: #D9D4CA">28–29</span>
+          <span style="font-size: 17px">Aug 2026</span>
+        </div>
+        <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-stretch: 75%; font-weight: 800; font-size: 24px; text-transform: uppercase; line-height: 1.1; color: #D9D4CA">Metamorphosis Music &amp; Arts</span>
+          <span style="font-size: 17px">NOVUH B2B Wohlsy · Orlando Amphitheater</span>
+        </div>
+      </div>
+      <div class="sh-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 20px 16px; margin: 0 -16px; border-bottom: 1px solid rgba(244,241,234,0.12); color: #A39E94">
+        <div style="width: 210px; display: flex; align-items: baseline; gap: 10px">
+          <span style="font-stretch: 62%; font-weight: 900; font-size: 44px; line-height: 1; color: #D9D4CA">31</span>
+          <span style="font-size: 17px">May 2025</span>
+        </div>
+        <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-stretch: 75%; font-weight: 800; font-size: 24px; text-transform: uppercase; line-height: 1.1; color: #D9D4CA">FKMF Afterparty ft. RL Grime</span>
+          <span style="font-size: 17px">The Vanguard, Orlando</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="crew" style="max-width: 1360px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 4vw, 40px) clamp(64px, 8vw, 112px); display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+    <div style="flex: 1 1 520px">
+      <img src="./assets/65750edb3bfbcc8eefa81fc45e4957da.jpg" alt="NOVUH behind Pioneer decks, pointing at the crowd under red and blue stage light" style="width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 55% 30%; display: block">
+    </div>
+    <div style="flex: 1 1 380px; display: flex; flex-direction: column; gap: 20px">
+      <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5vw, 72px); line-height: 0.92; text-transform: uppercase">Sets built like journeys</h2>
+      <p style="margin: 0; color: #C9C4BA">Born in Florida and based in Orlando, NOVUH makes dubstep and bass music rooted in space exploration and adventure, and plays Central Florida lineups and B2B sets with local peers. Influences: Subtronics, Virtual Riot, Jessica Audiffred, Monxx and the underground dubstep scene.</p>
+    </div>
+  </section>
+
+  <section id="ground" style="background: {{accent}}; color: #030304">
+    <div style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
+      <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(56px, 10vw, 152px); line-height: 0.85; text-transform: uppercase">Ground control</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; font-size: 18px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 800">Booking — 20Hz Productions</span><a href="mailto:20hzproductionsllc@gmail.com" style="color: #030304">20hzproductionsllc@gmail.com</a></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 800">Management — Primal Productions</span><a href="mailto:primalproductionsmgmt@gmail.com" style="color: #030304">primalproductionsmgmt@gmail.com</a></div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px 20px; align-content: flex-start; font-weight: 700">
+          <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="color: #030304">Spotify</a>
+          <a href="https://music.apple.com/us/artist/novuh/1496416154" style="color: #030304">Apple Music</a>
+          <a href="https://soundcloud.com/novuhmusic" style="color: #030304">SoundCloud</a>
+          <a href="https://www.instagram.com/novuh_music/" style="color: #030304">Instagram</a>
+          <a href="https://twitter.com/NOVUH_music" style="color: #030304">X</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="max-width: 1360px; margin: 0 auto; padding: 48px clamp(16px, 4vw, 40px) 32px; display: flex; flex-direction: column; gap: 20px">
+    <div style="color: rgba(244,241,234,0.08)">
+      <svg viewBox="510 480 1540 505" style="width: 100%; height: auto; display: block" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
+    </div>
+    <span style="font-size: 15px; color: #A39E94">© 2026 NOVUH</span>
+  </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF6A2B","options":["#FF6A2B","#E8B04A","#7FE8FF"]},"playIntro":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":4500}}'>
+var NV_WM = 'M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z';
+var NV_TRACKS = [
+  { title: 'FUTC', meta: 'Single · Latest release', year: '2026', c: ['#FFD9B8', '#FF6A2B', '#5A1E08'] },
+  { title: 'FLY', meta: 'Single', year: '2026', c: ['#E6FBFF', '#7FE8FF', '#123A5C'] },
+  { title: 'Take My Hand', meta: 'Welcome To MVTR · w/ MVTR & TPiston', year: '2026', c: ['#E8E0FF', '#8B78FF', '#22174F'] },
+  { title: 'FLOWSTATE', meta: 'FLOWSTATE EP', year: '2025', c: ['#D8FFF4', '#3FD6B5', '#0B3A34'] },
+  { title: 'HYPERFLOW', meta: 'FLOWSTATE EP', year: '2025', c: ['#FFE0F4', '#E04FB0', '#3E0F33'] },
+  { title: 'BLOCKCHAIN', meta: 'FLOWSTATE EP', year: '2025', c: ['#E2ECF5', '#7C93AB', '#1B2633'] },
+  { title: 'TIME & SPACE', meta: 'Single', year: '2025', c: ['#FFF1CF', '#E8B04A', '#4A2E08'] },
+  { title: 'SAVE ME', meta: 'w/ NJOY', year: '2025', c: ['#FFD6D2', '#E8483B', '#3F0E0A'] },
+  { title: 'NIGHT//DAY', meta: 'w/ Wohlsy', year: '2025', c: ['#FFF6E0', '#5F7FE0', '#0E1530'] },
+  { title: 'Infinity', meta: 'Single', year: '2020', c: ['#E9EEF5', '#9AA9C0', '#20283A'] },
+  { title: "MOBBIN'", meta: 'w/ NOVEMBR', year: 'Soon', locked: true, c: ['#4A4A50', '#26262B', '#0B0B0C'] }
+];
+function nvPlanet(c) {
+  return 'radial-gradient(circle at 34% 30%, ' + c[0] + ' 0%, ' + c[1] + ' 30%, ' + c[2] + ' 66%, #050608 94%)';
+}
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#FF6A2B';
+    const st = this.state || {};
+    const sel = st.sel ?? 0;
+    const playing = st.playing ?? false;
+    const playable = NV_TRACKS.length - 1;
+
+    const tracks = NV_TRACKS.map((t, i) => {
+      const active = i === sel;
+      return {
+        title: t.title,
+        meta: t.meta,
+        planet: nvPlanet(t.c),
+        locked: !!t.locked,
+        active: active,
+        bg: active ? 'rgba(255,106,43,0.10)' : 'transparent',
+        color: t.locked ? '#77736C' : '#F4F1EA',
+        status: t.locked ? 'Soon' : (active && playing ? '▶ Playing' : t.year),
+        statusColor: active ? accent : '#A39E94',
+        cursor: t.locked ? 'not-allowed' : 'pointer',
+        pick: () => { if (!t.locked) this.setState({ sel: i, playing: true }); }
+      };
+    });
+
+    const c = NV_TRACKS[sel];
+    const bars = [];
+    for (let i = 0; i < 64; i++) {
+      const v = Math.abs(Math.sin(i * 1.37 + sel * 2.1) * Math.cos(i * 0.41 + sel * 0.7));
+      bars.push({
+        h: Math.round(18 + 80 * v) + '%',
+        c: i < 24 ? accent : 'rgba(244,241,234,0.32)',
+        cls: playing ? 'wv wv-on' : 'wv',
+        d: '-' + ((i % 9) * 0.11).toFixed(2) + 's'
+      });
+    }
+
+    const layers = [];
+    for (let i = 14; i >= 1; i--) {
+      const k = i / 14;
+      const shade = Math.round(58 - 44 * k);
+      layers.push({
+        z: (-i * 2.5) + 'px',
+        fill: 'rgb(' + Math.round(shade * 0.75) + ',' + shade + ',' + Math.round(shade * 1.3) + ')',
+        stroke: i === 14 ? 'rgba(127,232,255,0.7)' : 'none'
+      });
+    }
+
+    return {
+      accent: accent,
+      wm: NV_WM,
+      layers: layers,
+      tracks: tracks,
+      bars: bars,
+      cur: { title: c.title, meta: c.meta, year: c.year, planet: nvPlanet(c.c), glow: c.c[1] + '55' },
+      playIcon: playing ? '❚❚' : '▶',
+      playAria: playing ? 'Pause' : 'Play',
+      ringCls: playing ? 'pl-ring-on' : '',
+      surfCls: playing ? 'pl-surf-on' : '',
+      toggle: () => this.setState({ playing: !playing }),
+      next: () => this.setState({ sel: (sel + 1) % playable, playing: true }),
+      prev: () => this.setState({ sel: (sel - 1 + playable) % playable, playing: true }),
+      replay: () => window.nvIntro && window.nvIntro()
+    };
+  }
+}
+</script>
+<div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden">
+<canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+<div id="nv-bar-t" style="position:absolute;left:0;right:0;top:0;height:7vh;background:#000"></div>
+<div id="nv-bar-b" style="position:absolute;left:0;right:0;bottom:0;height:7vh;background:#000"></div>
+<div id="nv-cd" style="position:absolute;left:clamp(16px,6vw,96px);top:50%;transform:translateY(-50%);transform-origin:0 50%;text-align:left;font-family:'Archivo',sans-serif;font-weight:900;font-stretch:62%;line-height:1;color:#F4F1EA;pointer-events:none;opacity:0"></div>
+<div id="nv-hud" style="position:absolute;left:clamp(16px,3vw,32px);bottom:calc(7vh + 14px);font:600 11px/1.7 ui-monospace,Menlo,monospace;letter-spacing:.14em;color:rgba(244,241,234,.62);pointer-events:none;white-space:pre"></div>
+<button type="button" id="nv-skip" style="position:absolute;right:20px;top:calc(7vh + 14px);min-height:44px;padding:0 20px;border-radius:999px;border:1px solid rgba(244,241,234,.4);background:rgba(3,3,4,.5);color:#F4F1EA;font:600 15px 'Archivo',system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(6px)">Skip</button>
+</div>
+<script type="module" src="./space.js"></script>
+</body>
+</html>
