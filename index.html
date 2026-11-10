@@ -153,9 +153,7 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
   .nv-nav{display:grid!important;grid-template-columns:repeat(4,1fr);align-items:center;row-gap:2px;min-height:0!important;padding-top:12px!important;padding-bottom:4px!important}
   .nv-navlogo{grid-column:1/4;grid-row:1}
   .nv-links{display:contents!important}
-  .nv-links>a{grid-row:2;justify-self:center;font-size:16px}
-  .nv-links>a:first-child{justify-self:start}
-  .nv-links>a:nth-child(4){justify-self:end}
+  .nv-links>a:not(.nv-listen){display:none}
   .nv-links>a.nv-listen{grid-column:4;grid-row:1;justify-self:end;min-height:42px!important;padding:0 18px!important}
   #top{min-height:max(620px,88svh)!important}
   #top>div:last-child{padding-bottom:56px!important;gap:28px!important}
