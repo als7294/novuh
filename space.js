@@ -191,21 +191,19 @@ function startLoops() {
   if (RM) return;
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     const v = e.target; v.muted = true;
+    if (PHONE) return; // phones: the stories player decides which clip plays
     if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
   }), { rootMargin: '200px' });
   vids.forEach((v) => { v.muted = true; v.setAttribute('muted', ''); io.observe(v); });
   // iOS can refuse muted autoplay (Low Power Mode etc.); the first tap anywhere starts whatever is on screen
   const kick = () => document.querySelectorAll('video').forEach((v) => { const r = v.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth) v.play().catch(() => {}); });
   ['touchend', 'click'].forEach((ev) => addEventListener(ev, kick, { passive: true }));
-  // accordion: hover picks a slice, otherwise it cycles on its own
   const tiles = [...document.querySelectorAll('.lv')].filter((t) => !t.closest('x-dc'));
   const pick = (i) => { tiles.forEach((t, k) => t.classList.toggle('on', k === i)); };
-  // the open slice stays open until another one is hovered (or tapped)
-  tiles.forEach((t, i) => { t.addEventListener('mouseenter', () => pick(i)); t.addEventListener('click', () => pick(i)); });
-  // phones: the card centred in the swipe strip is the active one
-  if (PHONE && tiles.length) {
-    const io2 = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) pick(tiles.indexOf(e.target)); }), { root: tiles[0].parentElement, threshold: 0.75 });
-    tiles.forEach((t) => io2.observe(t));
+  if (PHONE && tiles.length) startStories(tiles, pick);
+  else {
+    // desktop accordion: the open slice stays open until another one is hovered (or clicked)
+    tiles.forEach((t, i) => { t.addEventListener('mouseenter', () => pick(i)); t.addEventListener('click', () => pick(i)); });
   }
   // meteor band: lazy-load and play only near the viewport
   const mv = [...document.querySelectorAll('video.mt-v')].find((v) => !v.closest('x-dc'));
@@ -221,6 +219,45 @@ function startLoops() {
       if (e.isIntersecting) { if (mv.preload !== 'auto') { mv.preload = 'auto'; mv.load(); } mv.play().catch(() => {}); } else mv.pause();
     }), { rootMargin: '300px' }).observe(mv);
   }
+}
+
+/* Phones: Live media as a stories player — tap right/left to step, hold to pause, auto-advance.
+   Taps only, so it never fights the page's vertical scroll the way a sideways swipe strip did on iOS. */
+function startStories(tiles, pick) {
+  const grid = tiles[0].parentElement, DUR = 6000;
+  grid.classList.add('lv-stories');
+  const bars = document.createElement('div'); bars.className = 'lv-bars'; bars.setAttribute('aria-hidden', 'true');
+  tiles.forEach(() => { const b = document.createElement('span'); b.appendChild(document.createElement('i')); bars.appendChild(b); });
+  grid.appendChild(bars);
+  let i = 0, timer = 0, startedAt = 0, left = DUR, visible = false, held = false;
+  const vid = (k) => tiles[k].querySelector('video');
+  const run = (ms) => { clearTimeout(timer); startedAt = performance.now(); left = ms; timer = setTimeout(() => show(i + 1), ms); };
+  function show(n) {
+    i = (n + tiles.length) % tiles.length; pick(i);
+    [...bars.children].forEach((b, k) => { b.className = k < i ? 'done' : ''; });
+    const now = bars.children[i]; void now.offsetWidth; now.className = 'now';   // restart the fill
+    tiles.forEach((_, k) => { const v = vid(k); if (!v) return; if (k === i && visible) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
+    if (visible) run(DUR); else clearTimeout(timer);
+  }
+  grid.addEventListener('click', (e) => {
+    if (held) { held = false; return; }               // the release after a hold shouldn't also step
+    const r = grid.getBoundingClientRect();
+    show(e.clientX - r.left < r.width * 0.33 ? i - 1 : i + 1);
+  });
+  let holdT = 0;
+  grid.addEventListener('pointerdown', () => { holdT = setTimeout(() => {
+    held = true; grid.classList.add('hold'); clearTimeout(timer); left -= performance.now() - startedAt; const v = vid(i); if (v) v.pause();
+  }, 220); });
+  const release = () => { clearTimeout(holdT); if (!grid.classList.contains('hold')) return;
+    grid.classList.remove('hold'); const v = vid(i); if (v && visible) v.play().catch(() => {}); if (visible) run(Math.max(400, left)); };
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => grid.addEventListener(ev, release));
+  grid.addEventListener('contextmenu', (e) => e.preventDefault());
+  // only advance while it's actually on screen
+  new IntersectionObserver((es) => es.forEach((e) => {
+    visible = e.isIntersecting;
+    if (visible) show(i); else { clearTimeout(timer); const v = vid(i); if (v) v.pause(); }
+  }), { threshold: 0.35 }).observe(grid);
+  show(0);
 }
 startLoops();
 
