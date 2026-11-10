@@ -136,13 +136,11 @@ startBackground();
    Launch intro: real-time 3D scene
    ===================================================================== */
 const ov = document.getElementById('nv-intro');
-const cdEl = document.getElementById('nv-cd');
-const hudEl = document.getElementById('nv-hud');
-const barT = document.getElementById('nv-bar-t');
-const barB = document.getElementById('nv-bar-b');
+const NV_WM = 'M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z';
 
-const T_IGN = 1.55, T_LIFT = 2.0, T_FADE = 4.15, T_END = 4.95, ROCK_Y = 1.7;
-const lift = (t) => { if (t < T_LIFT) return 0; const u = t - T_LIFT; return 3 * u * u + 6 * u * u * u * u; };
+/* timeline (s): engine already lit, intro opens on liftoff */
+const T_IGN = -0.7, T_LIFT = 0, T_FADE = 1.85, T_END = 2.45, PREWARM = 0.55, ROCK_Y = 1.7;
+const lift = (t) => { if (t < T_LIFT) return 0; const u = t - T_LIFT; return 5 * u * u + 14 * u * u * u * u; };
 
 function canvasTex(w, h, draw) {
   const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
@@ -167,7 +165,7 @@ const glowTex = () => canvasTex(128, 128, (x) => {
 
 /* Instanced camera-facing quads: no point-size limits, one draw call per system. */
 class Particles {
-  constructor(max, map, blending) {
+  constructor(max, map, blending, near = 0) {
     this.max = max; this.list = [];
     const base = new THREE.PlaneGeometry(1, 1);
     const g = new THREE.InstancedBufferGeometry();
@@ -177,9 +175,9 @@ class Particles {
     g.setAttribute('iPos', this.aPos = mk(this.pos, 3)); g.setAttribute('iD', this.aDat = mk(this.dat, 3)); g.setAttribute('iC', this.aCol = mk(this.col, 3));
     g.instanceCount = 0; this.geo = g;
     this.mesh = new THREE.Mesh(g, new THREE.ShaderMaterial({
-      uniforms: { map: { value: map } }, transparent: true, depthWrite: false, blending,
-      vertexShader: `attribute vec3 iPos; attribute vec3 iD; attribute vec3 iC; varying vec2 vUv; varying float vA; varying vec3 vC;
-        void main(){vUv=uv;vA=iD.y;vC=iC;vec4 mv=modelViewMatrix*vec4(iPos,1.);float c=cos(iD.z),s=sin(iD.z);
+      uniforms: { map: { value: map }, uNear: { value: near } }, transparent: true, depthWrite: false, blending,
+      vertexShader: `attribute vec3 iPos; attribute vec3 iD; attribute vec3 iC; uniform float uNear; varying vec2 vUv; varying float vA; varying vec3 vC;
+        void main(){vUv=uv;vC=iC;vec4 mv=modelViewMatrix*vec4(iPos,1.);vA=iD.y*smoothstep(uNear*.3,uNear,-mv.z);float c=cos(iD.z),s=sin(iD.z);
         mv.xy+=mat2(c,s,-s,c)*position.xy*iD.x;gl_Position=projectionMatrix*mv;}`,
       fragmentShader: `uniform sampler2D map; varying vec2 vUv; varying float vA; varying vec3 vC;
         void main(){vec4 t=texture2D(map,vUv);gl_FragColor=vec4(vC*t.rgb,t.a*vA);}`,
@@ -303,10 +301,8 @@ function buildIntro() {
     const t = new THREE.Mesh(new THREE.TorusGeometry(0.39, 0.065, 12, 40), metal); t.position.set(0, 8.3, 1.02); g.add(t);
   }
   const decal = canvasTex(256, 1024, (x, w, h) => {
-    x.translate(w / 2, h / 2); x.rotate(Math.PI / 2); x.fillStyle = '#141418';
-    x.font = "900 190px Archivo, 'Arial Black', sans-serif"; x.textAlign = 'center'; x.textBaseline = 'middle';
-    try { x.letterSpacing = '18px'; } catch (e) { /* older canvas */ }
-    x.fillText('NOVUH', 0, 8);
+    const k = 0.58; x.translate(w / 2, h / 2); x.rotate(Math.PI / 2); x.scale(k, k); x.translate(-1279, -731);
+    x.fillStyle = '#141418'; x.fill(new Path2D(NV_WM), 'evenodd');
   });
   const decalMesh = new THREE.Mesh(new THREE.CylinderGeometry(1.016, 1.016, 4.6, 32, 1, true, FACE - 0.42, 0.84),
     new THREE.MeshStandardMaterial({ map: decal, transparent: true, roughness: 0.4, metalness: 0.1, polygonOffset: true, polygonOffsetFactor: -2 }));
@@ -338,7 +334,7 @@ function buildIntro() {
   const engine = new THREE.PointLight(0xff8a3c, 0, 140, 1.5); engine.position.y = -1.2; rocket.add(engine);
 
   /* particles */
-  const smoke = new Particles(2600, puffTex(), THREE.NormalBlending);
+  const smoke = new Particles(2600, puffTex(), THREE.NormalBlending, 16);
   const fire = new Particles(1600, glowTex(), THREE.AdditiveBlending);
   scene.add(smoke.mesh, fire.mesh);
 
@@ -352,69 +348,57 @@ const polar = (deg, r, y) => { const a = THREE.MathUtils.degToRad(deg); return [
 const mix3 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
 function shot(t, R) {
   const narrow = innerWidth < innerHeight; // portrait: pull back so the rocket fits
-  const ka = smooth(0, 2.3, t);
-  // A: worm's-eye at the fins, dutch tilt, slow orbit + push in
-  const A = polar(lerp(158, 122, ka), lerp(narrow ? 12 : 9.5, narrow ? 9 : 6.6, ka), lerp(0.7, 1.5, ka));
-  const Al = [0, lerp(11, 8.2, ka) + R * 0.9, 0];
-  // B: wide liftoff, camera planted on the ground, tilting up
-  const kb = smooth(1.8, 3.4, t);
-  const B = polar(lerp(104, 86, kb), narrow ? 52 : 36, 2.6);
-  const Bl = [0, 6 + R * 0.8, 0];
-  // C: chase from below as it climbs
-  const C = [7, R * 0.88 - 4, 9];
-  const Cl = [0, R + 5, 0];
-  const k1 = smooth(1.7, 2.85, t), k2 = smooth(2.9, 3.85, t);
+  // A: low dutch angle at the pad, rocket tears up through frame
+  const ka = smooth(0, 1.1, t);
+  const A = polar(lerp(150, 120, ka), lerp(narrow ? 16 : 12, narrow ? 21 : 16, ka), lerp(1.4, 4, ka));
+  const Al = [0, 8 + R * 0.75, 0];
+  // B: whip into a chase from below
+  const B = [6, R * 0.8 - 5, 8], Bl = [0, R * 0.97 + 4, 0];
+  // C: camera falls behind, tilting into open sky; rocket shrinks to a point
+  const C = [16, R * 0.55 - 10, 20], Cl = [0, R + 6, 0];
+  const k1 = smooth(0.65, 1.35, t), k2 = smooth(1.3, 2.0, t);
   return {
     pos: mix3(mix3(A, B, k1), C, k2), look: mix3(mix3(Al, Bl, k1), Cl, k2),
-    fov: lerp(lerp(narrow ? 70 : 62, narrow ? 56 : 40, k1), narrow ? 74 : 64, k2),
-    roll: lerp(lerp(0.22, 0.05, k1), -0.15, k2),
+    fov: lerp(lerp(narrow ? 80 : 68, narrow ? 70 : 60, k1), narrow ? 62 : 52, k2),
+    roll: lerp(lerp(0.3, -0.12, k1), 0, k2),
   };
 }
 
 let S = null, raf = 0, t0 = 0, last = 0, running = false, prevY = ROCK_Y;
 const nozzle = new THREE.Vector3();
 
-function frame(now) {
-  if (!t0) t0 = now;
-  const t = (now - t0) / 1000, dt = Math.min(0.033, (now - (last || now)) / 1000); last = now;
+function simulate(t, dt, render) {
   const f60 = dt * 60;
   const R = lift(t);
   S.rocket.position.y = ROCK_Y + R;
   nozzle.set(0, S.rocket.position.y - 0.15, 0);
   const moved = Math.max(0, nozzle.y - prevY); prevY = nozzle.y; // emit along the path travelled this frame
-  const ign = smooth(T_IGN, T_IGN + 0.4, t);
+  const ign = smooth(T_IGN, T_IGN + 0.3, t);
   const flick = 0.85 + 0.3 * Math.random();
 
   /* flame + light */
-  const len = (2 + 7 * ign) * (1 + Math.min(1, R / 40) * 1.2) * (0.92 + 0.16 * Math.random());
+  const len = (2 + 7 * ign) * (1 + Math.min(1, R / 40) * 1.4) * (0.92 + 0.16 * Math.random());
   S.flameO.scale.set(1 + 0.08 * Math.random(), len, 1 + 0.08 * Math.random()); S.flameO.position.y = -len / 2;
   S.flameI.scale.set(1, len * 0.55, 1); S.flameI.position.y = -len * 0.275;
   S.flameO.material.uniforms.uI.value = ign * flick * 1.1; S.flameI.material.uniforms.uI.value = ign * flick * 1.6;
   S.flameO.material.uniforms.uT.value = S.flameI.material.uniforms.uT.value = t;
   S.engine.intensity = ign * 300 * flick;
-  S.armPivot.rotation.y = -smooth(T_IGN - 0.3, T_IGN + 0.9, t) * 1.25;
+  S.armPivot.rotation.y = -1.25;
   S.beacon.visible = Math.sin(t * 8) > 0;
 
   /* emit */
-  if (t < T_IGN && Math.random() < 0.5 * f60) { // venting LOX vapour
-    const a = rnd(0, 6.283);
-    S.smoke.add({ x: Math.sin(a) * 1.05, y: rnd(3, 9) + ROCK_Y, z: Math.cos(a) * 1.05, vx: Math.sin(a) * rnd(0.3, 1), vy: rnd(-0.6, -0.1), vz: Math.cos(a) * rnd(0.3, 1), age: 0, life: rnd(1.4, 2.4), size: rnd(0.6, 1.2), grow: rnd(0.8, 1.6), rot: rnd(0, 6.28), vr: rnd(-0.5, 0.5), sh: rnd(0.8, 1), a0: 0.5, drag: 0.6, r: 1, g: 1, b: 1, alpha: 0 });
+  const nf = Math.round((14 + moved * 6) * ign * f60);
+  for (let i = 0; i < nf; i++) S.fire.add({ x: rnd(-0.3, 0.3), y: nozzle.y - rnd(0, 1.5 + moved), z: rnd(-0.3, 0.3), vx: rnd(-2, 2), vy: -rnd(28, 48), vz: rnd(-2, 2), age: 0, life: rnd(0.18, 0.4), size: rnd(1.0, 2.0) * (1 + Math.min(2, R / 80)), rot: rnd(0, 6.28), r: 1, g: 1, b: 1, alpha: 0 });
+  if (R < 30) { // ground cloud blasting out of the pad
+    const ns = Math.round(22 * ign * f60 * (1 - R / 30));
+    for (let i = 0; i < ns; i++) {
+      const a = rnd(0, 6.283), sp = rnd(10, 34), up = Math.random() < 0.3;
+      S.smoke.add({ x: Math.sin(a) * rnd(1.5, 3.5), y: rnd(1.6, 3.2), z: Math.cos(a) * rnd(1.5, 3.5), vx: Math.sin(a) * sp * (up ? 0.3 : 1), vy: up ? rnd(4, 11) : rnd(0.3, 3), vz: Math.cos(a) * sp * (up ? 0.3 : 1), age: 0, life: rnd(3.2, 5.5), size: rnd(4, 8), grow: rnd(3, 8), rot: rnd(0, 6.28), vr: rnd(-0.4, 0.4), sh: rnd(0.55, 1), a0: rnd(0.55, 0.85), drag: 1.1, r: 1, g: 1, b: 1, alpha: 0 });
+    }
   }
-  if (ign > 0) {
-    const nf = Math.round((14 + moved * 6) * ign * f60);
-    for (let i = 0; i < nf; i++) S.fire.add({ x: rnd(-0.3, 0.3), y: nozzle.y - rnd(0, 1.5 + moved), z: rnd(-0.3, 0.3), vx: rnd(-2, 2), vy: -rnd(28, 48), vz: rnd(-2, 2), age: 0, life: rnd(0.18, 0.4), size: rnd(1.0, 2.0), rot: rnd(0, 6.28), r: 1, g: 1, b: 1, alpha: 0 });
-    const alt = R;
-    if (alt < 30 && t < T_FADE) { // ground cloud blasting out of the pad
-      const ns = Math.round(22 * ign * f60 * (1 - alt / 30));
-      for (let i = 0; i < ns; i++) {
-        const a = rnd(0, 6.283), sp = rnd(10, 34), up = Math.random() < 0.3;
-        S.smoke.add({ x: Math.sin(a) * rnd(1.5, 3.5), y: rnd(1.6, 3.2), z: Math.cos(a) * rnd(1.5, 3.5), vx: Math.sin(a) * sp * (up ? 0.3 : 1), vy: up ? rnd(4, 11) : rnd(0.3, 3), vz: Math.cos(a) * sp * (up ? 0.3 : 1), age: 0, life: rnd(3.2, 5.5), size: rnd(4, 8), grow: rnd(3, 8), rot: rnd(0, 6.28), vr: rnd(-0.4, 0.4), sh: rnd(0.55, 1), a0: rnd(0.55, 0.85), drag: 1.1, r: 1, g: 1, b: 1, alpha: 0 });
-      }
-    }
-    if (alt > 2 && t < T_END) { // contrail
-      const nc = Math.round((5 + moved * 2.5) * f60);
-      for (let i = 0; i < nc; i++) S.smoke.add({ x: rnd(-0.5, 0.5), y: nozzle.y - rnd(2, 5 + moved), z: rnd(-0.5, 0.5), vx: rnd(-1.5, 1.5), vy: rnd(-3, 0), vz: rnd(-1.5, 1.5), age: 0, life: rnd(2.5, 4), size: rnd(1.6, 3), grow: rnd(2, 4), rot: rnd(0, 6.28), vr: rnd(-0.4, 0.4), sh: rnd(0.7, 1), a0: rnd(0.5, 0.75), drag: 0.8, r: 1, g: 1, b: 1, alpha: 0 });
-    }
+  if (R > 2) { // contrail
+    const nc = Math.round((5 + moved * 2.5) * f60);
+    for (let i = 0; i < nc; i++) S.smoke.add({ x: rnd(-0.5, 0.5), y: nozzle.y - rnd(2, 5 + moved), z: rnd(-0.5, 0.5), vx: rnd(-1.5, 1.5), vy: rnd(-3, 0), vz: rnd(-1.5, 1.5), age: 0, life: rnd(2, 3), size: rnd(1.6, 3), grow: rnd(2, 4), rot: rnd(0, 6.28), vr: rnd(-0.4, 0.4), sh: rnd(0.7, 1), a0: rnd(0.5, 0.75), drag: 0.8, r: 1, g: 1, b: 1, alpha: 0 });
   }
 
   /* simulate */
@@ -436,46 +420,31 @@ function frame(now) {
     const base = 0.16 * p.sh;
     p.r = base + 0.05 + warm * 1.0; p.g = base + 0.06 + warm * 0.5; p.b = base + 0.09 + warm * 0.2;
   });
+  if (!render) return;
 
   /* camera */
   const c = shot(t, R);
-  const shake = (ign * (1 - smooth(2.6, 3.9, t)) * 0.16 + smooth(T_IGN, T_IGN + 0.1, t) * (1 - smooth(T_IGN + 0.1, T_IGN + 0.6, t)) * 0.25);
+  const shake = 0.22 * (1 - smooth(0, 1.3, t));
   S.camera.position.set(c.pos[0] + rnd(-shake, shake), c.pos[1] + rnd(-shake, shake), c.pos[2] + rnd(-shake, shake));
   S.camera.up.set(Math.sin(c.roll), Math.cos(c.roll), 0);
   S.camera.lookAt(c.look[0], c.look[1], c.look[2]);
-  S.camera.fov = c.fov + ign * (1 - smooth(T_IGN, T_IGN + 0.8, t)) * 4; S.camera.updateProjectionMatrix();
+  S.camera.fov = c.fov; S.camera.updateProjectionMatrix();
   S.renderer.render(S.scene, S.camera);
 
-  overlayText(t, R);
+  /* hand-off: fly through the overlay into the page's own sky */
   if (t > T_FADE) {
     let u = clamp01((t - T_FADE) / (T_END - T_FADE)); u = u * u * (3 - 2 * u);
-    const Rm = u * Math.hypot(innerWidth, innerHeight) * 0.75;
-    ov.style.webkitMaskImage = ov.style.maskImage = `radial-gradient(circle at 50% 42%, transparent ${Rm}px, #000 ${Rm + 160 * (1 - u) + 2}px)`;
+    ov.style.opacity = String(1 - u);
+    ov.style.transform = `scale(${1 + u * 0.35})`;
   }
-  if (t >= T_END) { stop(); return; }
-  raf = requestAnimationFrame(frame);
 }
 
-function overlayText(t, R) {
-  const steps = [['3', 0.3, 0.45], ['2', 0.75, 0.45], ['1', 1.2, 0.45], ['LIFTOFF', T_LIFT - 0.05, 1.3]];
-  let shown = false;
-  for (const [txt, at, dur] of steps) {
-    const a = t - at; if (a < 0 || a > dur) continue;
-    const u = a / dur, big = txt.length === 1; shown = true;
-    if (cdEl.textContent !== txt) cdEl.textContent = txt;
-    cdEl.style.fontSize = big ? 'clamp(140px, 30vw, 360px)' : 'clamp(48px, 9vw, 120px)';
-    cdEl.style.color = big ? 'rgba(244,241,234,.92)' : '#FF6A2B';
-    cdEl.style.textShadow = big ? '0 10px 60px rgba(0,0,0,.6)' : '0 0 40px rgba(255,106,43,.55)';
-    cdEl.style.opacity = String(Math.min(1, a / 0.06) * (1 - Math.pow(u, 3)));
-    cdEl.style.transform = `translateY(-50%) scale(${1 + u * 0.12})`;
-    cdEl.style.letterSpacing = big ? '0' : `${0.02 + u * 0.08}em`;
-  }
-  if (!shown) cdEl.style.opacity = '0';
-  const tt = t < T_LIFT ? `T-${(T_LIFT - t).toFixed(2)}` : `T+${(t - T_LIFT).toFixed(2)}`;
-  const vel = t < T_LIFT ? 0 : (lift(t + 0.05) - R) / 0.05;
-  hudEl.textContent = `NOVUH // MISSION 01\n${tt}   ALT ${String(Math.round(R)).padStart(4, '0')} M   VEL ${String(Math.round(vel * 3.6)).padStart(4, '0')} KM/H`;
-  const bars = smooth(T_FADE - 0.4, T_FADE + 0.2, t);
-  barT.style.transform = `translateY(${-bars * 100}%)`; barB.style.transform = `translateY(${bars * 100}%)`;
+function frame(now) {
+  if (!t0) t0 = now;
+  const t = (now - t0) / 1000, dt = Math.min(0.033, (now - (last || now)) / 1000); last = now;
+  simulate(t, dt, true);
+  if (t >= T_END) { stop(); return; }
+  raf = requestAnimationFrame(frame);
 }
 
 function rerise() {
@@ -484,24 +453,23 @@ function rerise() {
 function reveal(delay) { root.style.setProperty('--rd', delay); rerise(); }
 function stop() {
   cancelAnimationFrame(raf); running = false; ov.style.display = 'none';
-  ov.style.webkitMaskImage = ov.style.maskImage = '';
+  ov.style.opacity = ''; ov.style.transform = '';
   if (S) { S.smoke.clear(); S.fire.clear(); }
 }
-async function start() {
+function start() {
   if (RM) { stop(); reveal('0s'); return; }
   try {
-    if (!S) {
-      await Promise.race([document.fonts.load("900 100px Archivo"), new Promise((r) => setTimeout(r, 1200))]).catch(() => {});
-      S = buildIntro(); addEventListener('resize', () => S.size());
-    }
+    if (!S) { S = buildIntro(); addEventListener('resize', () => S.size()); }
   } catch (e) { stop(); reveal('0s'); return; }
   S.size(); S.smoke.clear(); S.fire.clear();
-  ov.style.display = ''; ov.style.webkitMaskImage = ov.style.maskImage = '';
+  // pre-roll the burn so frame one is already mid-liftoff with a full ground cloud
+  prevY = ROCK_Y;
+  for (let t = -PREWARM; t < 0; t += 1 / 60) simulate(t, 1 / 60, false);
+  ov.style.display = ''; ov.style.opacity = '1'; ov.style.transform = '';
   root.style.setProperty('--rd', '999s'); rerise();
-  setTimeout(() => { if (running) reveal('0s'); }, (T_FADE - 0.1) * 1000);
-  t0 = 0; last = 0; prevY = ROCK_Y; running = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  setTimeout(() => { if (running) reveal('0s'); }, (T_FADE + 0.05) * 1000);
+  t0 = 0; last = 0; running = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
 }
 
-document.getElementById('nv-skip').onclick = () => { stop(); reveal('0s'); };
 window.nvIntro = start;
 start();
