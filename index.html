@@ -58,6 +58,8 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 .pl-float2{animation:pl-float 10s ease-in-out infinite alternate-reverse}
 @keyframes pl-float{from{transform:translate(0,0)}to{transform:translate(18px,-22px)}}
 
+/* ---------- Cutout logo face: letters are windows into a nebula ---------- */
+.lg-cut{position:absolute;inset:0;transform:translateZ(.5px);background:url(./assets/logo-nebula.jpg) center/cover;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='510 480 1540 505' preserveAspectRatio='none'><path fill-rule='evenodd' d='M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z'/></svg>") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='510 480 1540 505' preserveAspectRatio='none'><path fill-rule='evenodd' d='M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z'/></svg>") 0 0/100% 100% no-repeat;box-shadow:inset 0 0 40px rgba(0,0,0,.6)}
 /* ---------- Shows ---------- */
 .sh-row{transition:background .2s ease}
 .sh-row:hover{background:rgba(255,106,43,0.08)}
@@ -98,21 +100,22 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
             <sc-for list="{{layers}}" as="l" hint-placeholder-count="14">
               <svg viewBox="510 480 1540 505" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ({{l.z}})"><path fill-rule="evenodd" fill="{{l.fill}}" stroke="{{l.stroke}}" stroke-width="5" d="{{wm}}"></path></svg>
             </sc-for>
-            <svg viewBox="510 480 1540 505" role="img" aria-label="NOVUH" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ(1px); filter: drop-shadow(0 0 16px rgba(127,232,255,0.6))">
+            <div class="lg-cut" aria-hidden="true"></div>
+            <svg viewBox="510 480 1540 505" role="img" aria-label="NOVUH" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ(1px); filter: drop-shadow(0 0 5px rgba(127,232,255,0.85)) drop-shadow(0 0 26px rgba(127,232,255,0.4))">
               <defs>
-                <linearGradient id="nvChrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset="0.4" stop-color="#C3D3E3"></stop><stop offset="0.5" stop-color="#55687D"></stop><stop offset="0.6" stop-color="#E2EEF8"></stop><stop offset="1" stop-color="#8CA0B5"></stop></linearGradient>
+                
                 <linearGradient id="nvGlare" x1="0" y1="0" x2="1" y2="0.3"><stop offset="0.38" stop-color="#FFFFFF" stop-opacity="0"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.8"></stop><stop offset="0.62" stop-color="#FFFFFF" stop-opacity="0"></stop><animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;0.45;1" dur="6s" repeatCount="indefinite"></animateTransform></linearGradient>
               </defs>
-              <path fill-rule="evenodd" fill="url(#nvChrome)" stroke="#7FE8FF" stroke-width="5" d="{{wm}}"></path>
-              <path fill-rule="evenodd" fill="url(#nvGlare)" d="{{wm}}"></path>
+                            <path fill="none" stroke="#DDF6FF" stroke-width="6" d="{{wm}}"></path>
+              <path fill="none" stroke="url(#nvGlare)" stroke-width="7" d="{{wm}}"></path>
             </svg>
           </div>
         </div>
       </div>
 
-      <div class="nv-rise d3" style="display: flex; flex-direction: column; align-items: center; gap: 16px">
+      <div class="nv-rise d3" style="position: relative; z-index: 2; margin-top: calc(-36px - clamp(10px, 2.4vw, 30px)); display: flex; flex-direction: column; align-items: center; gap: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.7), 0 8px 28px rgba(0,0,0,0.85)">
         <h1 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5.5vw, 76px); line-height: 0.92; text-transform: uppercase">Bass music for the outer edge.</h1>
-        <p style="margin: 0; max-width: 560px; font-size: 19px; color: #C9C4BA">Orlando dubstep producer and DJ Marc Velasquez. Every set is a mission: high-energy bass, bouncy flow and futuristic sound design.</p>
+        <p style="margin: 0; max-width: 560px; font-size: 19px; color: #C9C4BA">Orlando dubstep producer and DJ. Heavy, bouncy, futuristic bass, launched straight into orbit.</p>
       </div>
       <div class="nv-rise d4" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
         <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #030304; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Listen on Spotify</a>
