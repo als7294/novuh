@@ -203,6 +203,8 @@ function startLoops() {
   const mv = [...document.querySelectorAll('video.mt-v')].find((v) => !v.closest('x-dc'));
   if (mv) {
     mv.muted = true; mv.setAttribute('muted', '');
+    // poster only once the band is a screen away (it's below the fold)
+    new IntersectionObserver((es, io) => { if (es.some((e) => e.isIntersecting)) { mv.poster = mv.dataset.poster; io.disconnect(); } }, { rootMargin: '900px 0px' }).observe(mv);
     // excerpt, not a seamless loop: dip to black over the cut
     mv.style.transition = 'opacity .35s ease';
     mv.addEventListener('timeupdate', () => { mv.style.opacity = mv.duration - mv.currentTime < 0.45 ? '0' : '1'; });
@@ -785,7 +787,8 @@ function startAboutGlitch() {
   // the runtime keeps a hidden template copy with the same gradient id; give the live one its own id so its animation runs
   const lg = word.querySelector('linearGradient');
   if (lg) { lg.id = 'abGradLive'; word.style.fill = 'url(#abGradLive)'; }
-  cut.loading = 'eager'; // small AVIF; fetch now so he glitches in with the wordmark, not after
+  // fetch his cutout a screen or so ahead, so he glitches in with the wordmark without loading it on first paint
+  new IntersectionObserver((es, io) => { if (es.some((e) => e.isIntersecting)) { cut.loading = 'eager'; io.disconnect(); } }, { rootMargin: '1400px 0px' }).observe(stage);
   if (RM) { word.classList.add('ab-show'); cut.classList.add('ab-show'); return; }
   let done = false;
   new IntersectionObserver((es, io) => es.forEach((e) => {
