@@ -3,6 +3,8 @@ import * as THREE from './vendor/three.module.min.js';
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DPR = Math.min(2, window.devicePixelRatio || 1);
 const PHONE = Math.min(innerWidth, innerHeight) < 760; // lighter GPU budget on phones
+// iOS fires resize whenever the address bar slides; only react to real width changes there (else canvases realloc mid-scroll and flash)
+const onWidthResize = (fn) => { let w = innerWidth; addEventListener('resize', () => { if (PHONE && innerWidth === w) return; w = innerWidth; fn(); }); };
 const root = document.documentElement;
 const rnd = (a, b) => a + Math.random() * (b - a);
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -20,7 +22,7 @@ uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uScro
 float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
   return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<6;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
+float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<OCT;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
 vec3 stars(vec2 px,float cell,float dens,float seed){
   vec2 g=px/cell; vec2 id=floor(g); vec2 f=fract(g)-.5;
   float n=h21(id+seed);
@@ -110,22 +112,28 @@ function startBackground() {
     uScroll: { value: 0 }, uHero: { value: 800 }, uPx: { value: 1 },
   };
   scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
-    uniforms: u, depthTest: false, depthWrite: false,
+    uniforms: u, depthTest: false, depthWrite: false, defines: { OCT: PHONE ? 4 : 6 },
     vertexShader: 'void main(){gl_Position=vec4(position.xy,0.,1.);}', fragmentShader: BG_FRAG,
   })));
   // ponytail: fixed 1.25x render scale for the full-screen fbm; drop to 1 if low-end GPUs stutter
-  const pr = PHONE ? Math.min(DPR, 0.9) : Math.min(DPR, 1.25);
-  const size = () => { r.setPixelRatio(pr); r.setSize(cv.clientWidth, cv.clientHeight, false); u.uRes.value.set(cv.width, cv.height); u.uPx.value = cv.height / Math.max(1, cv.clientHeight); };
-  size(); addEventListener('resize', size);
+  const pr = PHONE ? Math.min(DPR, 0.75) : Math.min(DPR, 1.25);
+  if (PHONE) cv.style.height = '100lvh'; // size to the large viewport so the address bar never resizes it
+  let dirty = true;
+  const size = () => { r.setPixelRatio(pr); r.setSize(cv.clientWidth, cv.clientHeight, false); u.uRes.value.set(cv.width, cv.height); u.uPx.value = cv.height / Math.max(1, cv.clientHeight); dirty = true; };
+  size(); onWidthResize(size);
+  addEventListener('scroll', () => { dirty = true; }, { passive: true });
   const mt = new THREE.Vector2();
   addEventListener('pointermove', (e) => mt.set(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5));
   const t0 = performance.now();
   const loop = (now) => {
+    // phones: no idle redraw (no twinkle); only re-render when the scroll moves the planet rim
+    if (PHONE && !dirty) { requestAnimationFrame(loop); return; }
+    dirty = false;
     const hero = live('top');
     u.uHero.value = (hero ? hero.offsetTop + hero.offsetHeight : innerHeight) * u.uPx.value;
     u.uScroll.value = scrollY * u.uPx.value;
     u.uMouse.value.lerp(mt, 0.04);
-    u.uTime.value = RM ? 0 : (now - t0) / 1000;
+    u.uTime.value = RM || PHONE ? 0 : (now - t0) / 1000;
     r.render(scene, cam);
     requestAnimationFrame(loop);
   };
@@ -138,6 +146,7 @@ startBackground();
    canvas behind it and one in front so particles pass around the letters
    ===================================================================== */
 function startParticles() {
+  if (PHONE) return;
   const cvs = [...document.querySelectorAll('canvas.lg-pt')].filter((c) => !c.closest('x-dc'));
   if (cvs.length < 2) { requestAnimationFrame(startParticles); return; }
   const back = cvs.find((c) => c.dataset.layer === 'back'), front = cvs.find((c) => c.dataset.layer === 'front');
@@ -207,6 +216,7 @@ startLoops();
 
 /* About: glitch-in trigger + particles drifting up behind him */
 function startAbout() {
+  if (PHONE) return;
   const stage = [...document.querySelectorAll('.ab-stage')].find((x) => !x.closest('x-dc'));
   if (!stage) { requestAnimationFrame(startAbout); return; }
   const cv = stage.querySelector('.ab-pt'), cx = cv.getContext('2d');
@@ -314,7 +324,7 @@ class Particles {
 function buildIntro() {
   const cv = document.getElementById('nv-intro-c');
   const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(DPR, PHONE ? 1.25 : 1.75));
+  renderer.setPixelRatio(Math.min(DPR, PHONE ? 1 : 1.75));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x04050a, 0.0042);
@@ -443,8 +453,8 @@ function buildIntro() {
   const engine = new THREE.PointLight(0xff8a3c, 0, 140, 1.5); engine.position.y = -1.2; rocket.add(engine);
 
   /* particles */
-  const smoke = new Particles(PHONE ? 1400 : 2600, puffTex(), THREE.NormalBlending, 16);
-  const fire = new Particles(PHONE ? 900 : 1600, glowTex(), THREE.AdditiveBlending);
+  const smoke = new Particles(PHONE ? 800 : 2600, puffTex(), THREE.NormalBlending, 16);
+  const fire = new Particles(PHONE ? 500 : 1600, glowTex(), THREE.AdditiveBlending);
   scene.add(smoke.mesh, fire.mesh);
 
   const st = { renderer, scene, camera, rocket, armPivot, beacon, flameO, flameI, engine, smoke, fire };
@@ -499,7 +509,7 @@ function simulate(t, dt, render) {
   const nf = Math.round((14 + moved * 6) * ign * f60);
   for (let i = 0; i < nf; i++) S.fire.add({ x: rnd(-0.3, 0.3), y: nozzle.y - rnd(0, 1.5 + moved), z: rnd(-0.3, 0.3), vx: rnd(-2, 2), vy: -rnd(28, 48), vz: rnd(-2, 2), age: 0, life: rnd(0.18, 0.4), size: rnd(1.0, 2.0) * (1 + Math.min(2, R / 80)), rot: rnd(0, 6.28), r: 1, g: 1, b: 1, alpha: 0 });
   if (R < 30) { // ground cloud blasting out of the pad
-    const ns = Math.round((PHONE ? 13 : 22) * ign * f60 * (1 - R / 30));
+    const ns = Math.round((PHONE ? 8 : 22) * ign * f60 * (1 - R / 30));
     for (let i = 0; i < ns; i++) {
       const a = rnd(0, 6.283), sp = rnd(10, 34), up = Math.random() < 0.3;
       S.smoke.add({ x: Math.sin(a) * rnd(1.5, 3.5), y: rnd(1.6, 3.2), z: Math.cos(a) * rnd(1.5, 3.5), vx: Math.sin(a) * sp * (up ? 0.3 : 1), vy: up ? rnd(4, 11) : rnd(0.3, 3), vz: Math.cos(a) * sp * (up ? 0.3 : 1), age: 0, life: rnd(3.2, 5.5), size: rnd(4, 8), grow: rnd(3, 8), rot: rnd(0, 6.28), vr: rnd(-0.4, 0.4), sh: rnd(0.55, 1), a0: rnd(0.55, 0.85), drag: 1.1, r: 1, g: 1, b: 1, alpha: 0 });
@@ -564,12 +574,15 @@ function stop() {
   window.__nvDone = true;
   cancelAnimationFrame(raf); running = false; ov.style.display = 'none';
   ov.style.opacity = ''; ov.style.transform = '';
-  if (S) { S.smoke.clear(); S.fire.clear(); }
+  // free the intro's GPU memory for the rest of the visit (it's one-shot)
+  if (S) { S.renderer.dispose(); S.renderer.forceContextLoss(); S = null; }
 }
 function start() {
   if (RM) { stop(); reveal('0s'); return; }
+  // phones: no intro; reveal once the rest of this module has run, so the 3D hero logo is in place and lands first
+  if (PHONE) { window.__nvDone = true; ov.style.display = 'none'; requestAnimationFrame(() => reveal('0s')); return; }
   try {
-    if (!S) { S = buildIntro(); addEventListener('resize', () => S.size()); }
+    if (!S) { S = buildIntro(); onWidthResize(() => S && S.size()); }
   } catch (e) { stop(); reveal('0s'); return; }
   S.size(); S.smoke.clear(); S.fire.clear();
   // pre-roll the burn so frame one is already mid-liftoff with a full ground cloud
@@ -632,7 +645,7 @@ function startLogo3D() {
     const cv = document.createElement('canvas'); cv.className = 'lg-3d'; cv.setAttribute('aria-hidden', 'true');
     bob.appendChild(cv);
     renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(DPR, PHONE ? 1.5 : 2)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.setPixelRatio(Math.min(DPR, PHONE ? 1 : 2)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(20, 1, 10, 20000);
 
@@ -676,14 +689,16 @@ function startLogo3D() {
       const dist = (W / 0.84 / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / camera.aspect;
       camera.position.set(0, 0, dist); camera.lookAt(0, 0, 0);
     };
-    size(); addEventListener('resize', size);
+    size(); onWidthResize(size);
     const mt = new THREE.Vector2(), ms = new THREE.Vector2();
+    let fr = 0;
     addEventListener('pointermove', (e) => mt.set(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5));
     const t0 = performance.now();
     bob.classList.add('lg-has3d');
     const loop = (now) => {
       requestAnimationFrame(loop);
       if (bob.getBoundingClientRect().bottom < 0) return;
+      if (PHONE && (fr++ & 1)) return; // 30fps is plenty for a slow sway
       const t = (now - t0) / 1000; ms.lerp(mt, 0.05);
       logo.rotation.y = Math.sin(t * 0.45) * 0.34 + ms.x * 0.35;
       logo.rotation.x = Math.sin(t * 0.31) * 0.1 + ms.y * 0.22;
@@ -742,7 +757,7 @@ function glitchIn(el, source, delay, dur, cssFilter) {
     let rd;
     try {
       rd = new THREE.WebGLRenderer({ canvas: cv, alpha: true, premultipliedAlpha: false, antialias: false });
-      rd.setPixelRatio(Math.min(DPR, 2)); rd.setSize(w, h, false);
+      rd.setPixelRatio(Math.min(DPR, PHONE ? 1 : 2)); rd.setSize(w, h, false);
     } catch (e) { cv.remove(); el.classList.add('ab-show'); resolve(); return; }
     // upload via a 2D canvas: some decoders (AVIF here) don't reach WebGL straight from an <img>
     const cc = document.createElement('canvas'); cc.width = source.naturalWidth || source.width; cc.height = source.naturalHeight || source.height;

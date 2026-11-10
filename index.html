@@ -7,20 +7,12 @@
 <meta property="og:title" content="NOVUH">
 <meta property="og:description" content="Bass music for the outer edge.">
 <meta property="og:image" content="assets/700965a6e2411c5c31618b7b2408ba24.jpg">
-<script>/* always land on the hero: no restored scroll, no jump to a #section */if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0);addEventListener('load',function(){scrollTo(0,0)});document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvDone){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
+<script>/* always land on the hero: no restored scroll, no jump to a #section */if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0);addEventListener('load',function(){scrollTo(0,0)});/* phones skip the launch intro entirely */if(Math.min(innerWidth,innerHeight)<760)document.documentElement.classList.add('nv-phone');document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvDone){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
 <title>NOVUH — Full site</title>
-<link rel="modulepreload" href="./vendor/three.module.min.js">
-<link rel="modulepreload" href="./space.js?v=22">
+<link rel="modulepreload" href="./app.js?v=2">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script defer src="./vendor/react.js"></script>
-<script defer src="./vendor/react-dom.js"></script>
-<script defer src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'"><noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet"></noscript>
 <style>
 body{margin:0;background:#030304}
 a{color:#F4F1EA}a:hover{color:#C49BFF}
@@ -171,7 +163,10 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
   .mt{aspect-ratio:4/5;max-height:80svh}
   .mt video{object-position:50% 46%}
   .gc-social{display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
+  .lg-3d{filter:none}
+  .lg-pt,.ab-pt{display:none}
 }
+.nv-phone #nv-intro{display:none!important}
 /* ---------- Shows ---------- */
 .sh-next{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:clamp(28px,3vw,40px) clamp(20px,3vw,40px) clamp(24px,3vw,36px);margin:0 0 28px;
   background:linear-gradient(120deg,rgba(91,60,255,.22),rgba(155,77,255,.12) 50%,rgba(214,91,255,.2)),rgba(8,6,16,.7);
@@ -198,7 +193,8 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 
 @media (prefers-reduced-motion: reduce){.lg-cut,.hz-glow,.hz-flare,.hz-ring{animation:none}.nv-rise{animation:none;opacity:1}.gx-far,.gx-near,.gx-spin,.gx-neb-a,.gx-neb-b,.gx-neb-c,.lg-bob,.lg-spin,.pl-float,.pl-float2,.wv-on,.pl-ring-on,.pl-surf-on{animation:none}}
 </style>
-</helmet>
+</head>
+<body>
 <div style="width: 100%; min-height: 100vh; position: relative; background-color: #030304; color: #F4F1EA; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; line-height: 1.55">
 
   <div aria-hidden="true" style="position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none">
@@ -211,14 +207,14 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
   <header class="nv-rise d5" style="position: relative; z-index: 3">
     <nav aria-label="Main" class="nv-nav" style="max-width: 1360px; margin: 0 auto; padding: 8px clamp(16px, 4vw, 40px); min-height: 80px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
       <a href="#top" aria-label="NOVUH home" class="nv-navlogo">
-        <svg viewBox="510 480 1540 505" aria-hidden="true"><path fill="none" stroke="rgba(226,246,255,0.9)" stroke-width="16" stroke-linejoin="round" fill-rule="evenodd" d="{{wm}}"></path></svg>
+        <svg viewBox="510 480 1540 505" aria-hidden="true"><path fill="none" stroke="rgba(226,246,255,0.9)" stroke-width="16" stroke-linejoin="round" fill-rule="evenodd" d="M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z"></path></svg>
       </a>
       <div class="nv-links" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; font-size: 16px; font-weight: 600">
         <a href="#live" style="text-decoration: none; padding: 12px 0">Live</a>
         <a href="#flight" style="text-decoration: none; padding: 12px 0">Shows</a>
         <a href="#crew" style="text-decoration: none; padding: 12px 0">About</a>
         <a href="#ground" style="text-decoration: none; padding: 12px 0">Booking</a>
-        <a class="nv-listen" href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #FFFFFF; padding: 0 20px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 800">Listen</a>
+        <a class="nv-listen" href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: linear-gradient(120deg, #5B3CFF 0%, #9B4DFF 52%, #D65BFF 100%); color: #FFFFFF; padding: 0 20px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 800">Listen</a>
       </div>
     </nav>
   </header>
@@ -231,17 +227,67 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
         <canvas class="lg-pt" data-layer="back" aria-hidden="true"></canvas>
         <div class="lg-bob" style="position: relative; width: 100%; aspect-ratio: 1540 / 505">
           <div class="lg-spin" style="position: absolute; inset: 0">
-            <sc-for list="{{layers}}" as="l" hint-placeholder-count="26">
-              <svg viewBox="510 480 1540 505" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ({{l.z}})"><path fill-rule="evenodd" fill="{{l.fill}}" stroke="{{l.stroke}}" stroke-width="5" d="{{wm}}"></path></svg>
-            </sc-for>
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
             <div class="lg-cut" aria-hidden="true"></div>
             <svg viewBox="510 480 1540 505" role="img" aria-label="NOVUH" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; transform: translateZ(1px); filter: drop-shadow(0 0 4px rgba(127,232,255,0.45)) drop-shadow(0 0 22px rgba(127,232,255,0.16))">
               <defs>
                 
                 <linearGradient id="nvGlare" x1="0" y1="0" x2="1" y2="0.3"><stop offset="0.38" stop-color="#FFFFFF" stop-opacity="0"></stop><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.8"></stop><stop offset="0.62" stop-color="#FFFFFF" stop-opacity="0"></stop><animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;0.45;1" dur="6s" repeatCount="indefinite"></animateTransform></linearGradient>
               </defs>
-                            <path fill="none" stroke="rgba(214,240,255,0.62)" stroke-width="5" d="{{wm}}"></path>
-              <path fill="none" stroke="url(#nvGlare)" stroke-width="5" opacity="0.6" d="{{wm}}"></path>
+                            <path fill="none" stroke="rgba(214,240,255,0.62)" stroke-width="5" d="M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z"></path>
+              <path fill="none" stroke="url(#nvGlare)" stroke-width="5" opacity="0.6" d="M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z"></path>
             </svg>
           </div>
         </div>
@@ -254,7 +300,7 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
         <p style="margin: 0; max-width: 560px; font-size: 19px; color: #E4DFD5">Orlando dubstep producer and DJ. Heavy, bouncy, futuristic bass, launched straight into orbit.</p>
       </div>
       <div class="nv-rise d4" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
-        <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #FFFFFF; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Listen on Spotify</a>
+        <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: linear-gradient(120deg, #5B3CFF 0%, #9B4DFF 52%, #D65BFF 100%); color: #FFFFFF; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Listen on Spotify</a>
         <a href="#flight" style="text-decoration: none; border: 1px solid rgba(244,241,234,0.5); font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">See shows</a>
       </div>
     </div>
@@ -290,14 +336,14 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
       <div class="sh-row sh-next">
         <span class="sh-tag">Next show</span>
         <div style="width: 210px; display: flex; align-items: baseline; gap: 10px">
-          <span style="font-stretch: 62%; font-weight: 900; font-size: clamp(56px, 6vw, 84px); line-height: 1; background: {{accent}}; -webkit-background-clip: text; background-clip: text; color: transparent">APR</span>
+          <span style="font-stretch: 62%; font-weight: 900; font-size: clamp(56px, 6vw, 84px); line-height: 1; background: linear-gradient(120deg, #5B3CFF 0%, #9B4DFF 52%, #D65BFF 100%); -webkit-background-clip: text; background-clip: text; color: transparent">APR</span>
           <span style="font-size: 17px; color: #A39E94">2027</span>
         </div>
         <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 2px">
           <span style="font-stretch: 75%; font-weight: 900; font-size: clamp(30px, 3.4vw, 44px); text-transform: uppercase; line-height: 1.02">Forbidden Kingdom</span>
           <span style="font-size: 17px; color: #C9C4BA">NOVUH B2B Wohlsy · Central Florida Fairgrounds</span>
         </div>
-        <a href="https://www.forbiddenkingdomfestival.com/" target="_blank" rel="noopener" style="text-decoration: none; background: {{accent}}; color: #FFFFFF; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px; box-shadow: 0 10px 30px rgba(155,77,255,0.35)">Tickets ↗</a>
+        <a href="https://www.forbiddenkingdomfestival.com/" target="_blank" rel="noopener" style="text-decoration: none; background: linear-gradient(120deg, #5B3CFF 0%, #9B4DFF 52%, #D65BFF 100%); color: #FFFFFF; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px; box-shadow: 0 10px 30px rgba(155,77,255,0.35)">Tickets ↗</a>
       </div>
       <h3 class="sh-past-label">Past shows</h3>
       <div class="sh-past-grid">
@@ -334,7 +380,7 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
     </div>
   </section>
 
-  <section id="ground" style="background: {{accent}}; color: #FFFFFF">
+  <section id="ground" style="background: linear-gradient(120deg, #5B3CFF 0%, #9B4DFF 52%, #D65BFF 100%); color: #FFFFFF">
     <div style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
       <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(56px, 10vw, 152px); line-height: 0.85; text-transform: uppercase">Ground control</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; font-size: 18px">
@@ -353,40 +399,15 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 
   <footer style="max-width: 1360px; margin: 0 auto; padding: 48px clamp(16px, 4vw, 40px) 32px; display: flex; flex-direction: column; gap: 20px">
     <div style="color: rgba(244,241,234,0.08)">
-      <svg viewBox="510 480 1540 505" style="width: 100%; height: auto; display: block" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
+      <svg viewBox="510 480 1540 505" style="width: 100%; height: auto; display: block" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z"></path></svg>
     </div>
     <span style="font-size: 15px; color: #A39E94">© 2026 NOVUH</span>
   </footer>
   </div>
 </div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"playIntro":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":4500}}'>
-var NV_WM = 'M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z';
-class Component extends DCLogic {
-  renderVals() {
-    const accent = 'linear-gradient(120deg, #5B3CFF 0%, #9B4DFF 52%, #D65BFF 100%)';
-    const layers = [];
-    for (let i = 26; i >= 1; i--) {
-      const k = i / 26;
-      const shade = Math.round(62 - 50 * k);
-      layers.push({
-        z: (-i * 2.6) + 'px',
-        fill: 'rgba(' + Math.round(shade * 0.7) + ',' + Math.round(shade * 0.9) + ',' + Math.round(shade * 1.25) + ',0.82)',
-        stroke: i === 26 ? 'rgba(127,232,255,0.3)' : (i % 6 === 0 ? 'rgba(127,232,255,0.07)' : 'none')
-      });
-    }
-
-    return {
-      accent: accent,
-      wm: NV_WM,
-      layers: layers
-    };
-  }
-}
-</script>
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./space.js?v=22"></script>
+<script type="module" src="./app.js?v=2"></script>
 </body>
 </html>
