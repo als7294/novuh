@@ -202,6 +202,11 @@ function startLoops() {
   const pick = (i) => { tiles.forEach((t, k) => t.classList.toggle('on', k === i)); };
   // the open slice stays open until another one is hovered (or tapped)
   tiles.forEach((t, i) => { t.addEventListener('mouseenter', () => pick(i)); t.addEventListener('click', () => pick(i)); });
+  // phones: the card centred in the swipe strip is the active one
+  if (PHONE && tiles.length) {
+    const io2 = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) pick(tiles.indexOf(e.target)); }), { root: tiles[0].parentElement, threshold: 0.75 });
+    tiles.forEach((t) => io2.observe(t));
+  }
   // meteor band: lazy-load and play only near the viewport
   const mv = [...document.querySelectorAll('video.mt-v')].find((v) => !v.closest('x-dc'));
   if (mv) {
