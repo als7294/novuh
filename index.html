@@ -10,7 +10,7 @@
 <script>document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvDone){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
 <title>NOVUH — Full site</title>
 <link rel="modulepreload" href="./vendor/three.module.min.js">
-<link rel="modulepreload" href="./space.js?v=19">
+<link rel="modulepreload" href="./space.js?v=20">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script defer src="./vendor/react.js"></script>
 <script defer src="./vendor/react-dom.js"></script>
@@ -148,6 +148,22 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 .mq-caps small{font-size:13px;font-weight:700;letter-spacing:.3em;margin-top:5px}
 @media (max-width:760px){.mq{flex-direction:column;align-items:flex-start;gap:4px}.mq-viewport{width:100%}.mq-item{height:44px}.mq-item img{height:26px}.mq-item img.h-tall{height:36px}.mq-script{font-size:28px}.mq-caps{font-size:22px}}
 @media (prefers-reduced-motion: reduce){.mq-track{animation:none;flex-wrap:wrap;width:auto}.mq-item[aria-hidden]{display:none}}
+/* ---------- Phones ---------- */
+@media (max-width:760px){
+  .nv-nav{display:grid!important;grid-template-columns:repeat(4,1fr);align-items:center;row-gap:2px;min-height:0!important;padding-top:12px!important;padding-bottom:4px!important}
+  .nv-navlogo{grid-column:1/4;grid-row:1}
+  .nv-links{display:contents!important}
+  .nv-links>a{grid-row:2;justify-self:center;font-size:16px}
+  .nv-links>a:first-child{justify-self:start}
+  .nv-links>a:nth-child(4){justify-self:end}
+  .nv-links>a.nv-listen{grid-column:4;grid-row:1;justify-self:end;min-height:42px!important;padding:0 18px!important}
+  #top{min-height:max(620px,88svh)!important}
+  #top>div:last-child{padding-bottom:56px!important;gap:28px!important}
+  .mq{margin-top:28px}
+  .mt{aspect-ratio:4/5;max-height:80svh}
+  .mt video{object-position:50% 46%}
+  .gc-social{display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
+}
 /* ---------- Shows ---------- */
 .sh-next{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:clamp(28px,3vw,40px) clamp(20px,3vw,40px) clamp(24px,3vw,36px);margin:0 0 28px;
   background:linear-gradient(120deg,rgba(91,60,255,.22),rgba(155,77,255,.12) 50%,rgba(214,91,255,.2)),rgba(8,6,16,.7);
@@ -185,16 +201,16 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 
 
   <header class="nv-rise d5" style="position: relative; z-index: 3">
-    <nav aria-label="Main" style="max-width: 1360px; margin: 0 auto; padding: 8px clamp(16px, 4vw, 40px); min-height: 80px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+    <nav aria-label="Main" class="nv-nav" style="max-width: 1360px; margin: 0 auto; padding: 8px clamp(16px, 4vw, 40px); min-height: 80px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
       <a href="#top" aria-label="NOVUH home" class="nv-navlogo">
         <svg viewBox="510 480 1540 505" aria-hidden="true"><path fill="none" stroke="rgba(226,246,255,0.9)" stroke-width="16" stroke-linejoin="round" fill-rule="evenodd" d="{{wm}}"></path></svg>
       </a>
-      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; font-size: 16px; font-weight: 600">
+      <div class="nv-links" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; font-size: 16px; font-weight: 600">
         <a href="#live" style="text-decoration: none; padding: 12px 0">Live</a>
         <a href="#flight" style="text-decoration: none; padding: 12px 0">Shows</a>
         <a href="#crew" style="text-decoration: none; padding: 12px 0">About</a>
         <a href="#ground" style="text-decoration: none; padding: 12px 0">Booking</a>
-        <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #FFFFFF; padding: 0 20px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 800">Listen</a>
+        <a class="nv-listen" href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #FFFFFF; padding: 0 20px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 800">Listen</a>
       </div>
     </nav>
   </header>
@@ -317,11 +333,11 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
         <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 800">Booking — 20Hz Productions</span><a href="mailto:20hzproductionsllc@gmail.com" style="color: #FFFFFF">20hzproductionsllc@gmail.com</a></div>
         <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 800">Management — Primal Productions</span><a href="mailto:primalproductionsmgmt@gmail.com" style="color: #FFFFFF">primalproductionsmgmt@gmail.com</a></div>
         <div style="display: flex; flex-wrap: wrap; gap: 4px 20px; align-content: flex-start; font-weight: 700">
-          <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="color: #FFFFFF">Spotify</a>
-          <a href="https://music.apple.com/us/artist/novuh/1496416154" style="color: #FFFFFF">Apple Music</a>
-          <a href="https://soundcloud.com/novuhmusic" style="color: #FFFFFF">SoundCloud</a>
-          <a href="https://www.instagram.com/novuh_music/" style="color: #FFFFFF">Instagram</a>
-          <a href="https://twitter.com/NOVUH_music" style="color: #FFFFFF">X</a>
+          <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" class="gc-social" style="color: #FFFFFF">Spotify</a>
+          <a href="https://music.apple.com/us/artist/novuh/1496416154" class="gc-social" style="color: #FFFFFF">Apple Music</a>
+          <a href="https://soundcloud.com/novuhmusic" class="gc-social" style="color: #FFFFFF">SoundCloud</a>
+          <a href="https://www.instagram.com/novuh_music/" class="gc-social" style="color: #FFFFFF">Instagram</a>
+          <a href="https://twitter.com/NOVUH_music" class="gc-social" style="color: #FFFFFF">X</a>
         </div>
       </div>
     </div>
@@ -363,6 +379,6 @@ class Component extends DCLogic {
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./space.js?v=19"></script>
+<script type="module" src="./space.js?v=20"></script>
 </body>
 </html>

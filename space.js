@@ -2,6 +2,7 @@ import * as THREE from './vendor/three.module.min.js';
 
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DPR = Math.min(2, window.devicePixelRatio || 1);
+const PHONE = Math.min(innerWidth, innerHeight) < 760; // lighter GPU budget on phones
 const root = document.documentElement;
 const rnd = (a, b) => a + Math.random() * (b - a);
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -113,7 +114,7 @@ function startBackground() {
     vertexShader: 'void main(){gl_Position=vec4(position.xy,0.,1.);}', fragmentShader: BG_FRAG,
   })));
   // ponytail: fixed 1.25x render scale for the full-screen fbm; drop to 1 if low-end GPUs stutter
-  const pr = Math.min(DPR, 1.25);
+  const pr = PHONE ? Math.min(DPR, 0.9) : Math.min(DPR, 1.25);
   const size = () => { r.setPixelRatio(pr); r.setSize(cv.clientWidth, cv.clientHeight, false); u.uRes.value.set(cv.width, cv.height); u.uPx.value = cv.height / Math.max(1, cv.clientHeight); };
   size(); addEventListener('resize', size);
   const mt = new THREE.Vector2();
@@ -313,7 +314,7 @@ class Particles {
 function buildIntro() {
   const cv = document.getElementById('nv-intro-c');
   const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(DPR, 1.75));
+  renderer.setPixelRatio(Math.min(DPR, PHONE ? 1.25 : 1.75));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x04050a, 0.0042);
@@ -442,8 +443,8 @@ function buildIntro() {
   const engine = new THREE.PointLight(0xff8a3c, 0, 140, 1.5); engine.position.y = -1.2; rocket.add(engine);
 
   /* particles */
-  const smoke = new Particles(2600, puffTex(), THREE.NormalBlending, 16);
-  const fire = new Particles(1600, glowTex(), THREE.AdditiveBlending);
+  const smoke = new Particles(PHONE ? 1400 : 2600, puffTex(), THREE.NormalBlending, 16);
+  const fire = new Particles(PHONE ? 900 : 1600, glowTex(), THREE.AdditiveBlending);
   scene.add(smoke.mesh, fire.mesh);
 
   const st = { renderer, scene, camera, rocket, armPivot, beacon, flameO, flameI, engine, smoke, fire };
@@ -498,7 +499,7 @@ function simulate(t, dt, render) {
   const nf = Math.round((14 + moved * 6) * ign * f60);
   for (let i = 0; i < nf; i++) S.fire.add({ x: rnd(-0.3, 0.3), y: nozzle.y - rnd(0, 1.5 + moved), z: rnd(-0.3, 0.3), vx: rnd(-2, 2), vy: -rnd(28, 48), vz: rnd(-2, 2), age: 0, life: rnd(0.18, 0.4), size: rnd(1.0, 2.0) * (1 + Math.min(2, R / 80)), rot: rnd(0, 6.28), r: 1, g: 1, b: 1, alpha: 0 });
   if (R < 30) { // ground cloud blasting out of the pad
-    const ns = Math.round(22 * ign * f60 * (1 - R / 30));
+    const ns = Math.round((PHONE ? 13 : 22) * ign * f60 * (1 - R / 30));
     for (let i = 0; i < ns; i++) {
       const a = rnd(0, 6.283), sp = rnd(10, 34), up = Math.random() < 0.3;
       S.smoke.add({ x: Math.sin(a) * rnd(1.5, 3.5), y: rnd(1.6, 3.2), z: Math.cos(a) * rnd(1.5, 3.5), vx: Math.sin(a) * sp * (up ? 0.3 : 1), vy: up ? rnd(4, 11) : rnd(0.3, 3), vz: Math.cos(a) * sp * (up ? 0.3 : 1), age: 0, life: rnd(3.2, 5.5), size: rnd(4, 8), grow: rnd(3, 8), rot: rnd(0, 6.28), vr: rnd(-0.4, 0.4), sh: rnd(0.55, 1), a0: rnd(0.55, 0.85), drag: 1.1, r: 1, g: 1, b: 1, alpha: 0 });
@@ -631,7 +632,7 @@ function startLogo3D() {
     const cv = document.createElement('canvas'); cv.className = 'lg-3d'; cv.setAttribute('aria-hidden', 'true');
     bob.appendChild(cv);
     renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(DPR, 2)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.setPixelRatio(Math.min(DPR, PHONE ? 1.5 : 2)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(20, 1, 10, 20000);
 
