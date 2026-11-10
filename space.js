@@ -141,7 +141,7 @@ function startParticles() {
   if (cvs.length < 2) { requestAnimationFrame(startParticles); return; }
   const back = cvs.find((c) => c.dataset.layer === 'back'), front = cvs.find((c) => c.dataset.layer === 'front');
   const bx = back.getContext('2d'), fx = front.getContext('2d');
-  const COLORS = ['127,232,255', '255,255,255', '255,160,110', '170,150,255'];
+  const COLORS = ['127,232,255', '255,255,255', '196,155,255', '170,150,255'];
   const P = Array.from({ length: innerWidth < 700 ? 60 : 120 }, () => ({
     a: Math.random() * 6.283, r: 0.3 + Math.random() * 0.8, y: (Math.random() - 0.5) * 1.1,
     sp: (0.06 + Math.random() * 0.22) * (Math.random() < 0.7 ? 1 : -1), vy: -(0.006 + Math.random() * 0.03),
@@ -212,7 +212,7 @@ function startAbout() {
   let W = 0, H = 0, on = false, visible = false;
   const size = () => { W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; };
   size(); addEventListener('resize', size);
-  const COLORS = ['255,140,80', '127,232,255', '255,255,255', '255,106,43'];
+  const COLORS = ['180,140,255', '127,232,255', '255,255,255', '214,91,255'];
   const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
   const P = Array.from({ length: innerWidth < 700 ? 50 : 110 }, () => ({
     x: 0.5 + gauss() * 0.42, y: Math.random(), v: 0.015 + Math.random() * 0.05, dx: (Math.random() - 0.5) * 0.01,
@@ -389,7 +389,7 @@ function buildIntro() {
   const rocket = new THREE.Group(); rocket.position.y = ROCK_Y; scene.add(rocket);
   const DS = THREE.DoubleSide;
   const white = new THREE.MeshStandardMaterial({ color: 0xf2efe8, roughness: 0.36, metalness: 0.18, side: DS });
-  const orange = new THREE.MeshStandardMaterial({ color: 0xff6a2b, roughness: 0.42, metalness: 0.12, side: DS });
+  const orange = new THREE.MeshStandardMaterial({ color: 0x8b5cff, roughness: 0.42, metalness: 0.12, side: DS });
   const dark = new THREE.MeshStandardMaterial({ color: 0x1c1c22, roughness: 0.45, metalness: 0.6, side: DS });
   const metal = new THREE.MeshStandardMaterial({ color: 0x77736c, roughness: 0.28, metalness: 0.95, side: DS });
   const V = (x, y) => new THREE.Vector2(x, y);
@@ -775,7 +775,7 @@ function startAboutGlitch() {
     const r = word.getBoundingClientRect();
     const svgImg = new Image();
     svgImg.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="510 480 1540 505" width="${Math.round(r.width * 2)}" height="${Math.round(r.height * 2)}"><path fill="#FF6A2B" fill-rule="evenodd" d="${NV_WM}"/></svg>`);
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="510 480 1540 505" width="${Math.round(r.width * 2)}" height="${Math.round(r.height * 2)}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5B3CFF"/><stop offset=".52" stop-color="#9B4DFF"/><stop offset="1" stop-color="#D65BFF"/></linearGradient></defs><path fill="url(#g)" fill-rule="evenodd" d="${NV_WM}"/></svg>`);
     const ready = (img) => (img.complete && img.naturalWidth ? Promise.resolve() : new Promise((res) => { img.onload = res; img.onerror = res; }));
     Promise.all([ready(svgImg), ready(cut)]).then(() => {
       glitchIn(word, svgImg, 0, 1.1);
