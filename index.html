@@ -98,9 +98,10 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 .ab-pt{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 .ab-floor{position:absolute;left:50%;bottom:-6%;width:min(70vw,760px);height:22%;transform:translateX(-50%);z-index:2;pointer-events:none;
   background:radial-gradient(closest-side,rgba(0,0,0,.92),rgba(0,0,0,.55) 45%,rgba(0,0,0,0));filter:blur(6px)}
-.ab-cut{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);z-index:3;
-  filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(-6px 22px 34px rgba(0,0,0,.6));
-  -webkit-mask-image:linear-gradient(180deg,#000 80%,transparent 99%);mask-image:linear-gradient(180deg,#000 80%,transparent 99%)}
+/* the leg fade lives on a full-width wrapper so it never clips his shadow at the image edges */
+.ab-cutwrap{position:absolute;inset:0;z-index:3;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent 99%);mask-image:linear-gradient(180deg,#000 80%,transparent 99%)}
+.ab-cut{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(-6px 22px 34px rgba(0,0,0,.6))}
 /* hidden until the section is reached, then glitch in: logo first, him right after */
 .ab-word,.ab-cut,.ab-floor,.ab-pt{opacity:0}
 .ab-in .ab-word{animation:ab-glitch .9s steps(1,end) forwards,ab-rgb .9s steps(1,end) forwards}
@@ -118,7 +119,7 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
   58%{opacity:.55;clip-path:inset(40% 0 44% 0);transform:translateX(calc(-50% - 9px))}
   66%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(calc(-50% + 3px))}
   76%{opacity:.8;transform:translateX(-50%)}
-  84%,100%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(-50%)}}
+  84%,100%{opacity:1;clip-path:inset(-60% -60% -60% -60%);transform:translateX(-50%)}}
 @keyframes ab-rgb{
   0%,64%{filter:drop-shadow(-7px 0 0 rgba(255,30,90,.85)) drop-shadow(7px 0 0 rgba(0,235,255,.85))}
   65%,100%{filter:none}}
@@ -268,7 +269,7 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
       <svg class="ab-word" viewBox="510 480 1540 505" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
       <canvas class="ab-pt" aria-hidden="true"></canvas>
       <div class="ab-floor" aria-hidden="true"></div>
-      <img class="ab-cut" src="./assets/novuh-cutout.png?v=2" alt="NOVUH standing in a black tee and camo cargos" loading="lazy">
+      <div class="ab-cutwrap"><img class="ab-cut" src="./assets/novuh-cutout.png?v=2" alt="NOVUH standing in a black tee and camo cargos" loading="lazy"></div>
     </div>
     <div style="position: relative; max-width: 1360px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px) clamp(64px, 8vw, 112px); display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-start">
       <h2 style="flex: 1 1 380px; margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5vw, 72px); line-height: 0.92; text-transform: uppercase">Sets built like journeys</h2>
