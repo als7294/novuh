@@ -68,7 +68,7 @@ void main(){
   st+=stars(fc+vec2(0.,uScroll*.1)+par*16.*uPx,23.*uPx,(.10+.32*band)*sAll,7.)*.8;
   st+=stars(fc+vec2(0.,uScroll*.22)+par*38.*uPx,64.*uPx,.15,13.);
   /* planet limb at the foot of the hero, sunrise on the edge */
-  float k=1.-smoothstep(0.,uHero*.8,uScroll);
+  float k=1.-smoothstep(uHero*.72,uHero*1.02,uScroll); // rim scrolls up with the page and only fades as it reaches the top
   float R=2.6*res.y;
   float limbY=res.y-(uHero-36.*uPx-uScroll);
   vec2 c=vec2(res.x*.5-par.x*14.*uPx,limbY-R);
@@ -767,6 +767,9 @@ function startAboutGlitch() {
   const stage = [...document.querySelectorAll('.ab-stage')].find((x) => !x.closest('x-dc'));
   if (!stage) { requestAnimationFrame(startAboutGlitch); return; }
   const word = stage.querySelector('.ab-word'), cut = stage.querySelector('.ab-cut');
+  // the runtime keeps a hidden template copy with the same gradient id; give the live one its own id so its animation runs
+  const lg = word.querySelector('linearGradient');
+  if (lg) { lg.id = 'abGradLive'; word.style.fill = 'url(#abGradLive)'; }
   cut.loading = 'eager'; // small AVIF; fetch now so he glitches in with the wordmark, not after
   if (RM) { word.classList.add('ab-show'); cut.classList.add('ab-show'); return; }
   let done = false;

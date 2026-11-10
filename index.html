@@ -7,10 +7,10 @@
 <meta property="og:title" content="NOVUH">
 <meta property="og:description" content="Bass music for the outer edge.">
 <meta property="og:image" content="assets/700965a6e2411c5c31618b7b2408ba24.jpg">
-<script>document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvDone){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
+<script>/* always land on the hero: no restored scroll, no jump to a #section */if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0);addEventListener('load',function(){scrollTo(0,0)});document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvDone){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
 <title>NOVUH — Full site</title>
 <link rel="modulepreload" href="./vendor/three.module.min.js">
-<link rel="modulepreload" href="./space.js?v=20">
+<link rel="modulepreload" href="./space.js?v=22">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script defer src="./vendor/react.js"></script>
 <script defer src="./vendor/react-dom.js"></script>
@@ -105,6 +105,14 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 .ab-cutwrap{position:absolute;inset:0;z-index:3;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent 99%);mask-image:linear-gradient(180deg,#000 80%,transparent 99%)}
 .ab-cut{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);
   filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(-6px 22px 34px rgba(0,0,0,.6))}
+.ab-word .ab-l{transform-box:fill-box;transform-origin:50% 60%;animation:ab-idle 6.5s ease-in-out infinite}
+.ab-word .ab-l:nth-child(2){animation-duration:7.3s;animation-delay:-1.2s}
+.ab-word .ab-l:nth-child(3){animation-duration:6.1s;animation-delay:-3.4s}
+.ab-word .ab-l:nth-child(4){animation-duration:7.9s;animation-delay:-2.1s}
+.ab-word .ab-l:nth-child(5){animation-duration:6.8s;animation-delay:-4.6s}
+.ab-word .ab-l:nth-child(6){animation-duration:7.1s;animation-delay:-0.6s}
+@keyframes ab-idle{0%,100%{transform:translate(0,0) rotate(0)}30%{transform:translate(1.5px,-7px) rotate(-.7deg)}65%{transform:translate(-1.5px,4px) rotate(.5deg)}}
+@media (prefers-reduced-motion: reduce){.ab-word .ab-l{animation:none}}
 /* hidden until the section is reached, then glitch in: logo first, him right after */
 .ab-word,.ab-cut,.ab-floor,.ab-pt{opacity:0}
 .ab-word.ab-show,.ab-cut.ab-show{opacity:1;transition:opacity .08s}
@@ -132,7 +140,7 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 .nv-navlogo{position:relative;display:block;width:120px;height:40px;filter:drop-shadow(0 0 6px rgba(127,232,255,.25))}
 .nv-navlogo svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
 /* ---------- Played-at marquee ---------- */
-.mq{position:relative;max-width:1360px;margin:clamp(96px,11vw,170px) auto 0;padding:0 clamp(16px,4vw,40px);display:flex;align-items:center;gap:clamp(16px,3vw,40px)}
+.mq{position:relative;max-width:1360px;margin:clamp(64px,7.5vw,120px) auto 0;padding:0 clamp(16px,4vw,40px);display:flex;align-items:center;gap:clamp(16px,3vw,40px)}
 .mq-label{flex:0 0 auto;font:700 15px/1 ui-monospace,Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;color:#C9C4D4}
 .mq-viewport{flex:1 1 auto;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .mq-track{display:flex;align-items:center;gap:clamp(48px,6vw,88px);width:max-content;margin:0;padding:18px 0;list-style:none;animation:mq-scroll 38s linear infinite;will-change:transform;backface-visibility:hidden}
@@ -275,7 +283,7 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
     </video>
   </section>
 
-  <section id="flight" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 32px">
+  <section id="flight" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px) clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 32px">
     <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Shows</h2>
 
     <div style="display: flex; flex-direction: column">
@@ -313,9 +321,9 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
     </div>
   </section>
 
-  <section id="crew" style="position: relative; overflow: hidden; padding-top: clamp(48px, 6vw, 80px)">
+  <section id="crew" style="position: relative; overflow: hidden; padding-top: clamp(8px, 1.5vw, 24px)">
     <div class="ab-stage">
-      <svg class="ab-word" viewBox="510 480 1540 505" aria-hidden="true"><defs><linearGradient id="abGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5B3CFF"></stop><stop offset="0.52" stop-color="#9B4DFF"></stop><stop offset="1" stop-color="#D65BFF"></stop></linearGradient></defs><path fill-rule="evenodd" d="{{wm}}"></path></svg>
+      <svg class="ab-word" viewBox="510 470 1540 525" aria-hidden="true" overflow="visible"><defs><linearGradient id="abGrad" gradientUnits="userSpaceOnUse" x1="510" y1="480" x2="1280" y2="985" spreadMethod="reflect"><stop offset="0" stop-color="#5B3CFF"></stop><stop offset="0.5" stop-color="#9B4DFF"></stop><stop offset="1" stop-color="#D65BFF"></stop><animateTransform attributeName="gradientTransform" type="translate" values="0 0;1540 0" dur="9s" repeatCount="indefinite"></animateTransform></linearGradient></defs><path class="ab-l" fill-rule="evenodd" d="M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z"></path><path class="ab-l" fill-rule="evenodd" d="M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z"></path><path class="ab-l" fill-rule="evenodd" d="M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z"></path><path class="ab-l" fill-rule="evenodd" d="M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z"></path><path class="ab-l" fill-rule="evenodd" d="M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z"></path></svg>
       <canvas class="ab-pt" aria-hidden="true"></canvas>
       <div class="ab-floor" aria-hidden="true"></div>
       <div class="ab-cutwrap"><picture><source srcset="./assets/novuh-cutout.avif" type="image/avif"><img class="ab-cut" src="./assets/novuh-cutout.png?v=2" alt="NOVUH standing in a black tee and camo cargos" loading="lazy" decoding="async"></picture></div>
@@ -379,6 +387,6 @@ class Component extends DCLogic {
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./space.js?v=20"></script>
+<script type="module" src="./space.js?v=22"></script>
 </body>
 </html>
