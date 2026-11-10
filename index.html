@@ -58,16 +58,6 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 .pl-float2{animation:pl-float 10s ease-in-out infinite alternate-reverse}
 @keyframes pl-float{from{transform:translate(0,0)}to{transform:translate(18px,-22px)}}
 
-/* ---------- Player ---------- */
-.wv{transform-origin:50% 50%}
-.wv-on{animation:wv .8s ease-in-out infinite alternate}
-@keyframes wv{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
-.pl-ring-on{animation:pl-orbit 6s linear infinite}
-@keyframes pl-orbit{to{transform:rotate(360deg)}}
-.pl-surf-on{animation:pl-surf 8s linear infinite}
-@keyframes pl-surf{to{transform:translateX(-50%)}}
-.tx-row:hover{background:rgba(244,241,234,0.05)!important}
-
 /* ---------- Shows ---------- */
 .sh-row{transition:background .2s ease}
 .sh-row:hover{background:rgba(255,106,43,0.08)}
@@ -90,7 +80,6 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
         <svg viewBox="510 480 1540 505" style="width: 120px; height: 40px; display: block" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
       </a>
       <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; font-size: 16px; font-weight: 600">
-        <a href="#music" style="text-decoration: none; padding: 12px 0">Music</a>
         <a href="#flight" style="text-decoration: none; padding: 12px 0">Shows</a>
         <a href="#crew" style="text-decoration: none; padding: 12px 0">About</a>
         <a href="#ground" style="text-decoration: none; padding: 12px 0">Booking</a>
@@ -126,63 +115,8 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
         <p style="margin: 0; max-width: 560px; font-size: 19px; color: #C9C4BA">Orlando dubstep producer and DJ Marc Velasquez. Every set is a mission: high-energy bass, bouncy flow and futuristic sound design.</p>
       </div>
       <div class="nv-rise d4" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
-        <a href="#music" style="text-decoration: none; background: {{accent}}; color: #030304; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Play FUTC</a>
+        <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo" style="text-decoration: none; background: {{accent}}; color: #030304; font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">▶ Listen on Spotify</a>
         <a href="#flight" style="text-decoration: none; border: 1px solid rgba(244,241,234,0.5); font-weight: 800; padding: 0 28px; min-height: 56px; display: inline-flex; align-items: center; font-size: 18px">See shows</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="music" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
-    <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Transmissions</h2>
-
-    <div style="border: 1px solid rgba(244,241,234,0.16); background: rgba(8,8,10,0.86)">
-      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px; padding: clamp(24px, 4vw, 48px); border-bottom: 1px solid rgba(244,241,234,0.12)">
-        <div aria-hidden="true" style="flex: 0 0 auto; position: relative; width: 260px; height: 260px; margin: 0 auto">
-          <div class="{{ringCls}}" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(244,241,234,0.3)">
-            <div style="position: absolute; left: 50%; top: -6px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #E8B04A; box-shadow: 0 0 12px #E8B04A"></div>
-          </div>
-          <div style="position: absolute; inset: 40px; border-radius: 50%; overflow: hidden; background: {{cur.planet}}; box-shadow: 0 0 60px {{cur.glow}}">
-            <div class="{{surfCls}}" style="position: absolute; left: 0; top: 0; width: 200%; height: 100%; background: repeating-linear-gradient(172deg, rgba(255,255,255,0.10) 0 5px, rgba(255,255,255,0) 5px 19px, rgba(0,0,0,0.12) 19px 26px, rgba(0,0,0,0) 26px 40px)"></div>
-            <div style="position: absolute; inset: 0; border-radius: 50%; box-shadow: inset -26px -22px 50px rgba(0,0,0,0.75), inset 10px 8px 24px rgba(255,255,255,0.18)"></div>
-          </div>
-        </div>
-
-        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
-          <div style="display: flex; flex-direction: column; gap: 6px">
-            <span style="font-stretch: 62%; font-weight: 900; font-size: clamp(52px, 7vw, 100px); line-height: 0.9; text-transform: uppercase">{{cur.title}}</span>
-            <span style="font-size: 18px; color: #C9C4BA">{{cur.meta}} · {{cur.year}}</span>
-          </div>
-          <div aria-hidden="true" style="display: flex; align-items: center; gap: 3px; height: 88px">
-            <sc-for list="{{bars}}" as="b" hint-placeholder-count="64">
-              <span class="{{b.cls}}" style="flex: 1 1 0; min-width: 2px; height: {{b.h}}; background: {{b.c}}; border-radius: 2px; animation-delay: {{b.d}}"></span>
-            </sc-for>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px">
-            <div style="display: flex; align-items: center; gap: 10px">
-              <button type="button" onClick="{{prev}}" aria-label="Previous track" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(244,241,234,0.35); background: transparent; color: #F4F1EA; font-size: 16px; cursor: pointer">⏮</button>
-              <button type="button" onClick="{{toggle}}" aria-label="{{playAria}}" style="width: 64px; height: 64px; border-radius: 50%; border: 0; background: {{accent}}; color: #030304; font-size: 22px; font-weight: 900; cursor: pointer; box-shadow: 0 0 30px rgba(255,106,43,0.45)">{{playIcon}}</button>
-              <button type="button" onClick="{{next}}" aria-label="Next track" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(244,241,234,0.35); background: transparent; color: #F4F1EA; font-size: 16px; cursor: pointer">⏭</button>
-            </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 16px; font-weight: 600">
-              <a href="https://open.spotify.com/artist/2wBCI4Ta8n8FUFWymClmQo">Spotify</a>
-              <a href="https://music.apple.com/us/artist/novuh/1496416154">Apple Music</a>
-              <a href="https://soundcloud.com/novuhmusic">SoundCloud</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div role="list" aria-label="Tracks" style="display: flex; flex-direction: column">
-        <sc-for list="{{tracks}}" as="t" hint-placeholder-count="11">
-          <div role="listitem">
-            <button type="button" class="tx-row" onClick="{{t.pick}}" disabled="{{t.locked}}" aria-pressed="{{t.active}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; width: 100%; min-height: 64px; padding: 12px clamp(16px, 4vw, 48px); box-sizing: border-box; background: {{t.bg}}; border: 0; border-bottom: 1px solid rgba(244,241,234,0.08); color: {{t.color}}; font: inherit; text-align: left; cursor: {{t.cursor}}">
-              <span aria-hidden="true" style="flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; background: {{t.planet}}; box-shadow: inset -4px -3px 6px rgba(0,0,0,0.6)"></span>
-              <span style="flex: 1 1 200px; font-stretch: 75%; font-weight: 800; font-size: 24px; text-transform: uppercase">{{t.title}}</span>
-              <span style="flex: 0 1 340px; font-size: 16px; color: #A39E94">{{t.meta}}</span>
-              <span style="width: 110px; text-align: right; font-size: 16px; font-weight: 600; color: {{t.statusColor}}">{{t.status}}</span>
-            </button>
-          </div>
-        </sc-for>
       </div>
     </div>
   </section>
@@ -279,59 +213,9 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF6A2B","options":["#FF6A2B","#E8B04A","#7FE8FF"]},"playIntro":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":4500}}'>
 var NV_WM = 'M520 531L644 531L689 707L689 531L796 487L796 930L673 930L623 748L623 930L520 975Z M910 532H1034A76 76 0 0 1 1110 608V856A76 76 0 0 1 1034 932H910A76 76 0 0 1 834 856V608A76 76 0 0 1 910 532Z M957 602A11 11 0 0 0 946 613V853A11 11 0 0 0 957 864H984A11 11 0 0 0 995 853V613A11 11 0 0 0 984 602Z M1130 487L1240 531L1278 770L1317 531L1428 487L1354 932L1210 932Z M1455 533H1567V850A17 17 0 0 0 1584 867H1600A17 17 0 0 0 1617 850V533H1720V855A77 77 0 0 1 1643 932H1530A75 75 0 0 1 1455 857Z M1774 491L1880 534L1880 694L1930 694L1930 534L2038 534L2038 976L1924 932L1924 765L1880 765L1880 932L1774 932Z';
-var NV_TRACKS = [
-  { title: 'FUTC', meta: 'Single · Latest release', year: '2026', c: ['#FFD9B8', '#FF6A2B', '#5A1E08'] },
-  { title: 'FLY', meta: 'Single', year: '2026', c: ['#E6FBFF', '#7FE8FF', '#123A5C'] },
-  { title: 'Take My Hand', meta: 'Welcome To MVTR · w/ MVTR & TPiston', year: '2026', c: ['#E8E0FF', '#8B78FF', '#22174F'] },
-  { title: 'FLOWSTATE', meta: 'FLOWSTATE EP', year: '2025', c: ['#D8FFF4', '#3FD6B5', '#0B3A34'] },
-  { title: 'HYPERFLOW', meta: 'FLOWSTATE EP', year: '2025', c: ['#FFE0F4', '#E04FB0', '#3E0F33'] },
-  { title: 'BLOCKCHAIN', meta: 'FLOWSTATE EP', year: '2025', c: ['#E2ECF5', '#7C93AB', '#1B2633'] },
-  { title: 'TIME & SPACE', meta: 'Single', year: '2025', c: ['#FFF1CF', '#E8B04A', '#4A2E08'] },
-  { title: 'SAVE ME', meta: 'w/ NJOY', year: '2025', c: ['#FFD6D2', '#E8483B', '#3F0E0A'] },
-  { title: 'NIGHT//DAY', meta: 'w/ Wohlsy', year: '2025', c: ['#FFF6E0', '#5F7FE0', '#0E1530'] },
-  { title: 'Infinity', meta: 'Single', year: '2020', c: ['#E9EEF5', '#9AA9C0', '#20283A'] },
-  { title: "MOBBIN'", meta: 'w/ NOVEMBR', year: 'Soon', locked: true, c: ['#4A4A50', '#26262B', '#0B0B0C'] }
-];
-function nvPlanet(c) {
-  return 'radial-gradient(circle at 34% 30%, ' + c[0] + ' 0%, ' + c[1] + ' 30%, ' + c[2] + ' 66%, #050608 94%)';
-}
 class Component extends DCLogic {
   renderVals() {
     const accent = this.props.accent ?? '#FF6A2B';
-    const st = this.state || {};
-    const sel = st.sel ?? 0;
-    const playing = st.playing ?? false;
-    const playable = NV_TRACKS.length - 1;
-
-    const tracks = NV_TRACKS.map((t, i) => {
-      const active = i === sel;
-      return {
-        title: t.title,
-        meta: t.meta,
-        planet: nvPlanet(t.c),
-        locked: !!t.locked,
-        active: active,
-        bg: active ? 'rgba(255,106,43,0.10)' : 'transparent',
-        color: t.locked ? '#77736C' : '#F4F1EA',
-        status: t.locked ? 'Soon' : (active && playing ? '▶ Playing' : t.year),
-        statusColor: active ? accent : '#A39E94',
-        cursor: t.locked ? 'not-allowed' : 'pointer',
-        pick: () => { if (!t.locked) this.setState({ sel: i, playing: true }); }
-      };
-    });
-
-    const c = NV_TRACKS[sel];
-    const bars = [];
-    for (let i = 0; i < 64; i++) {
-      const v = Math.abs(Math.sin(i * 1.37 + sel * 2.1) * Math.cos(i * 0.41 + sel * 0.7));
-      bars.push({
-        h: Math.round(18 + 80 * v) + '%',
-        c: i < 24 ? accent : 'rgba(244,241,234,0.32)',
-        cls: playing ? 'wv wv-on' : 'wv',
-        d: '-' + ((i % 9) * 0.11).toFixed(2) + 's'
-      });
-    }
-
     const layers = [];
     for (let i = 14; i >= 1; i--) {
       const k = i / 14;
@@ -346,18 +230,7 @@ class Component extends DCLogic {
     return {
       accent: accent,
       wm: NV_WM,
-      layers: layers,
-      tracks: tracks,
-      bars: bars,
-      cur: { title: c.title, meta: c.meta, year: c.year, planet: nvPlanet(c.c), glow: c.c[1] + '55' },
-      playIcon: playing ? '❚❚' : '▶',
-      playAria: playing ? 'Pause' : 'Play',
-      ringCls: playing ? 'pl-ring-on' : '',
-      surfCls: playing ? 'pl-surf-on' : '',
-      toggle: () => this.setState({ playing: !playing }),
-      next: () => this.setState({ sel: (sel + 1) % playable, playing: true }),
-      prev: () => this.setState({ sel: (sel - 1 + playable) % playable, playing: true }),
-      replay: () => window.nvIntro && window.nvIntro()
+      layers: layers
     };
   }
 }
@@ -365,6 +238,6 @@ class Component extends DCLogic {
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./space.js?v=4"></script>
+<script type="module" src="./space.js?v=5"></script>
 </body>
 </html>

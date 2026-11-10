@@ -51,16 +51,16 @@ void main(){
   float w1=fbm(q*2.1+vec2(uTime*.003,0.));
   float w2=fbm(q*4.2+w1*1.9+3.1);
   float dust=smoothstep(.44,.74,fbm(q*7.+w2*1.3+11.));
-  vec3 col=vec3(.004,.005,.010);
+  vec3 col=vec3(.0015,.002,.004);
   vec3 bandCol=mix(vec3(.26,.24,.40),vec3(1.,.80,.62),coreB*.85);
-  col+=bandCol*band*(.07+.26*w2*w2)*(1.-.8*dust*band);
+  col+=bandCol*band*(.025+.11*w2*w2)*(1.-.85*dust*band);
   /* emission / reflection nebulae */
   float n1=fbm(q*1.25+vec2(5.2,1.3)+w1*1.2);
   float n2=fbm(q*1.6+vec2(-3.,7.)+w2*.7);
   float n3=fbm(q*2.6+vec2(9.,2.)+w1);
-  col+=vec3(.50,.10,.38)*pow(n1,3.4)*.6;
-  col+=vec3(.08,.26,.42)*pow(n2,3.4)*.55;
-  col+=vec3(1.,.38,.14)*pow(n3,4.5)*.45*(.3+band);
+  col+=vec3(.50,.10,.38)*pow(n1,3.6)*.22;
+  col+=vec3(.08,.26,.42)*pow(n2,3.6)*.2;
+  col+=vec3(1.,.38,.14)*pow(n3,4.8)*.14*(.3+band);
   /* stars, three depths with parallax */
   float sAll=1.-dust*band*.8;
   vec3 st=stars(fc+vec2(0.,uScroll*.04)+par*6.*uPx,11.*uPx,(.07+.5*band)*sAll,1.)*.5;
@@ -77,7 +77,7 @@ void main(){
   float wx=exp(-pow((fc.x-sunX)/(res.x*.2),2.));
   vec3 atm=mix(vec3(.22,.48,1.),vec3(1.,.5,.2),wx*.9);
   float eo=max(e,0.);
-  float halo=exp(-eo/(.008*res.y))*.85+exp(-eo/(.06*res.y))*.32+exp(-eo/(.25*res.y))*.08;
+  float halo=exp(-eo/(.007*res.y))*.7+exp(-eo/(.05*res.y))*.18+exp(-eo/(.2*res.y))*.03;
   float rim=exp(-abs(e)/(1.1*uPx));
   vec2 surf=(fc-c)/res.y;
   float inner=exp(min(e,0.)/(.045*res.y));
@@ -87,11 +87,11 @@ void main(){
   vec3 limb=atm*halo*(.22+.95*wx)+mix(vec3(.55,.75,1.),vec3(1.,.85,.65),wx)*rim;
   float sy=c.y+sqrt(max(R*R-(sunX-c.x)*(sunX-c.x),0.))+1.5*uPx;
   vec2 sd=fc-vec2(sunX,sy);
-  float sun=exp(-length(sd)/(.005*res.y))*2.4+exp(-length(sd)/(.045*res.y))*.38;
+  float sun=exp(-length(sd)/(.005*res.y))*2.+exp(-length(sd)/(.04*res.y))*.22;
   sun+=exp(-abs(sd.y)/(1.2*uPx))*exp(-abs(sd.x)/(.32*res.x))*.7;
   vec3 space=col+st*(1.-inside*k);
   vec3 outc=mix(space,planet,inside*k)+(limb+vec3(1.,.84,.68)*sun)*k;
-  outc=1.-exp(-outc*1.3);
+  outc=1.-exp(-outc*1.1);
   outc+=(h21(fc+fract(uTime*7.))-.5)/255.;
   gl_FragColor=vec4(outc,1.);
 }`;
