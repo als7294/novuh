@@ -184,8 +184,63 @@ function startLoops() {
     if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
   }), { rootMargin: '200px' });
   vids.forEach((v) => { v.muted = true; v.setAttribute('muted', ''); io.observe(v); });
+  // accordion: hover picks a slice, otherwise it cycles on its own
+  const tiles = [...document.querySelectorAll('.lv')].filter((t) => !t.closest('x-dc'));
+  let idx = 0, hover = false;
+  const pick = (i) => { idx = i; tiles.forEach((t, k) => t.classList.toggle('on', k === i)); };
+  tiles.forEach((t, i) => { t.addEventListener('mouseenter', () => { hover = true; pick(i); }); t.addEventListener('click', () => pick(i)); });
+  tiles[0] && tiles[0].parentElement.addEventListener('mouseleave', () => { hover = false; });
+  setInterval(() => { if (!hover && !document.hidden) pick((idx + 1) % tiles.length); }, 3400);
+  // meteor band: lazy-load and play only near the viewport
+  const mv = [...document.querySelectorAll('video.mt-v')].find((v) => !v.closest('x-dc'));
+  if (mv) {
+    mv.muted = true; mv.setAttribute('muted', '');
+    // excerpt, not a seamless loop: dip to black over the cut
+    mv.style.transition = 'opacity .35s ease';
+    mv.addEventListener('timeupdate', () => { mv.style.opacity = mv.duration - mv.currentTime < 0.45 ? '0' : '1'; });
+    mv.addEventListener('seeked', () => { mv.style.opacity = '1'; });
+    new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { if (mv.preload !== 'auto') { mv.preload = 'auto'; mv.load(); } mv.play().catch(() => {}); } else mv.pause();
+    }), { rootMargin: '300px' }).observe(mv);
+  }
 }
 startLoops();
+
+/* About: glitch-in trigger + particles drifting up behind him */
+function startAbout() {
+  const stage = [...document.querySelectorAll('.ab-stage')].find((x) => !x.closest('x-dc'));
+  if (!stage) { requestAnimationFrame(startAbout); return; }
+  const cv = stage.querySelector('.ab-pt'), cx = cv.getContext('2d');
+  let W = 0, H = 0, on = false, visible = false;
+  const size = () => { W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; };
+  size(); addEventListener('resize', size);
+  const COLORS = ['255,140,80', '127,232,255', '255,255,255', '255,106,43'];
+  const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+  const P = Array.from({ length: innerWidth < 700 ? 50 : 110 }, () => ({
+    x: 0.5 + gauss() * 0.42, y: Math.random(), v: 0.015 + Math.random() * 0.05, dx: (Math.random() - 0.5) * 0.01,
+    s: 0.5 + Math.random() * 1.8, c: COLORS[(Math.random() * 4) | 0], tw: Math.random() * 6.28,
+  }));
+  new IntersectionObserver((es) => es.forEach((e) => {
+    visible = e.isIntersecting;
+    if (e.isIntersecting && e.intersectionRatio > 0.3 && !on) { on = true; stage.classList.add('ab-in'); }
+  }), { threshold: [0, 0.3] }).observe(stage);
+  let last = performance.now();
+  const loop = (now) => {
+    const dt = Math.min(0.05, (now - last) / 1000), t = now / 1000; last = now;
+    requestAnimationFrame(loop);
+    if (!on || !visible) return;
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0); cx.clearRect(0, 0, W, H); cx.globalCompositeOperation = 'lighter';
+    for (const p of P) {
+      if (!RM) { p.y -= p.v * dt; p.x += p.dx * dt; if (p.y < -0.02) { p.y = 1.02; p.x = 0.5 + gauss() * 0.42; } }
+      const a = (0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 2.2 + p.tw))) * Math.min(1, (1 - p.y) * 4) * 0.7;
+      const X = p.x * W, Y = p.y * H;
+      cx.fillStyle = `rgba(${p.c},${(a * 0.16).toFixed(3)})`; cx.beginPath(); cx.arc(X, Y, p.s * 4, 0, 6.283); cx.fill();
+      cx.fillStyle = `rgba(${p.c},${a.toFixed(3)})`; cx.beginPath(); cx.arc(X, Y, p.s, 0, 6.283); cx.fill();
+    }
+  };
+  requestAnimationFrame(loop);
+}
+startAbout();
 
 /* =====================================================================
    Launch intro: real-time 3D scene

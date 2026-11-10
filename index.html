@@ -65,18 +65,67 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
 @keyframes lg-hue{from{filter:hue-rotate(-18deg) saturate(.75) brightness(.8)}to{filter:hue-rotate(22deg) saturate(.85) brightness(.95)}}
 .lg-pt{position:absolute;left:-10%;right:-10%;top:-30%;bottom:-30%;width:120%;height:160%;pointer-events:none}
 .lg-pt[data-layer="front"]{z-index:2}
-/* ---------- Live media wall ---------- */
-.lv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.2vw,16px)}
-.lv{margin:0;position:relative;overflow:hidden;aspect-ratio:3/4;background:#0B0B0E;border:1px solid rgba(244,241,234,.08)}
-.lv:nth-child(even){transform:translateY(clamp(16px,3vw,48px))}
-.lv img,.lv video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .8s}
-.lv img{filter:saturate(.9) brightness(.92)}
-.lv:hover img,.lv:hover video{transform:scale(1.05);filter:none}
-@media (max-width:760px){.lv-grid{grid-template-columns:repeat(2,1fr)}}
-/* ---------- About: him in front of the wordmark ---------- */
+/* ---------- Live media wall: skewed accordion strip ---------- */
+.lv-grid{display:flex;gap:clamp(6px,.8vw,12px);height:clamp(380px,44vw,580px);transform:skewX(-9deg);margin:0 3%;counter-reset:lv}
+.lv{margin:0;position:relative;flex:1 1 0;min-width:0;overflow:hidden;background:#0B0B0E;transition:flex-grow .8s cubic-bezier(.2,.8,.2,1);cursor:pointer;counter-increment:lv}
+.lv.on{flex-grow:5.2}
+.lv img,.lv video{position:absolute;top:0;bottom:0;left:-40%;width:180%;height:100%;object-fit:cover;display:block;transform:skewX(9deg);
+  filter:grayscale(.7) brightness(.45) contrast(1.1);transition:filter .8s,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.lv.on img,.lv.on video{filter:none;transform:skewX(9deg) scale(1.04)}
+.lv::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(3,3,4,0) 55%,rgba(3,3,4,.75)),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);mix-blend-mode:normal}
+.lv::after{content:counter(lv,decimal-leading-zero);position:absolute;left:14px;bottom:12px;z-index:2;transform:skewX(9deg);font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.18em;color:rgba(244,241,234,.55);transition:color .6s}
+.lv.on::after{color:#FF6A2B}
+.lv.on{box-shadow:0 0 0 1px rgba(255,106,43,.55),0 20px 60px rgba(255,106,43,.12)}
+@media (max-width:760px){
+  .lv-grid{transform:none;margin:0 -16px;padding:0 16px;height:auto;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .lv-grid::-webkit-scrollbar{display:none}
+  .lv{flex:0 0 72%;aspect-ratio:3/4;scroll-snap-align:center}
+  .lv,.lv.on{flex-grow:0}
+  .lv img,.lv video{left:0;width:100%;transform:none;filter:none}
+  .lv.on img,.lv.on video{transform:none}
+  .lv::after{transform:none}
+}
+/* ---------- Meteor crash visual band ---------- */
+.mt{position:relative;overflow:hidden;margin-top:clamp(40px,6vw,88px);aspect-ratio:16/9;max-height:86vh;width:100%;background:#030304}
+.mt video,.mt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.mt::before,.mt::after{content:'';position:absolute;left:0;right:0;height:22%;z-index:1;pointer-events:none}
+.mt::before{top:0;background:linear-gradient(180deg,#030304,rgba(3,3,4,0))}
+.mt::after{bottom:0;background:linear-gradient(0deg,#030304,rgba(3,3,4,0))}
+.mt-tag{position:absolute;left:clamp(16px,4vw,40px);bottom:clamp(14px,3vw,32px);z-index:2;font:600 11px/1.6 ui-monospace,Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.6)}
+/* ---------- About: him glitching in front of the wordmark ---------- */
 .ab-stage{position:relative;height:clamp(520px,64vw,940px);max-width:1500px;margin:0 auto}
-.ab-word{position:absolute;left:50%;top:14%;width:min(96vw,1460px);transform:translateX(-50%);fill:#FF6A2B}
-.ab-cut{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(-6px 22px 34px rgba(0,0,0,.6));-webkit-mask-image:linear-gradient(180deg,#000 82%,transparent);mask-image:linear-gradient(180deg,#000 82%,transparent)}
+.ab-word{position:absolute;left:50%;top:14%;width:min(96vw,1460px);transform:translateX(-50%);fill:#FF6A2B;z-index:0}
+.ab-pt{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.ab-floor{position:absolute;left:50%;bottom:-6%;width:min(70vw,760px);height:22%;transform:translateX(-50%);z-index:2;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(0,0,0,.92),rgba(0,0,0,.55) 45%,rgba(0,0,0,0));filter:blur(6px)}
+.ab-cut{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);z-index:3;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(-6px 22px 34px rgba(0,0,0,.6));
+  -webkit-mask-image:linear-gradient(180deg,#000 80%,transparent 99%);mask-image:linear-gradient(180deg,#000 80%,transparent 99%)}
+/* hidden until the section is reached, then glitch in: logo first, him right after */
+.ab-word,.ab-cut,.ab-floor,.ab-pt{opacity:0}
+.ab-in .ab-word{animation:ab-glitch .9s steps(1,end) forwards,ab-rgb .9s steps(1,end) forwards}
+.ab-in .ab-cut{animation:ab-glitch .95s steps(1,end) .28s forwards,ab-rgb-cut .95s steps(1,end) .28s forwards}
+.ab-in .ab-floor,.ab-in .ab-pt{animation:ab-fade 1.2s ease .5s forwards}
+@keyframes ab-fade{to{opacity:1}}
+@keyframes ab-glitch{
+  0%{opacity:0;clip-path:inset(0 0 100% 0);transform:translateX(-50%)}
+  8%{opacity:1;clip-path:inset(12% 0 58% 0);transform:translateX(calc(-50% + 18px))}
+  16%{opacity:1;clip-path:inset(56% 0 18% 0);transform:translateX(calc(-50% - 14px))}
+  24%{opacity:.3;clip-path:inset(30% 0 36% 0);transform:translateX(calc(-50% + 8px)) skewX(8deg)}
+  32%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(calc(-50% - 6px))}
+  40%{opacity:1;clip-path:inset(72% 0 4% 0);transform:translateX(calc(-50% + 12px))}
+  48%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(-50%)}
+  58%{opacity:.55;clip-path:inset(40% 0 44% 0);transform:translateX(calc(-50% - 9px))}
+  66%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(calc(-50% + 3px))}
+  76%{opacity:.8;transform:translateX(-50%)}
+  84%,100%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(-50%)}}
+@keyframes ab-rgb{
+  0%,64%{filter:drop-shadow(-7px 0 0 rgba(255,30,90,.85)) drop-shadow(7px 0 0 rgba(0,235,255,.85))}
+  65%,100%{filter:none}}
+@keyframes ab-rgb-cut{
+  0%,64%{filter:drop-shadow(-8px 0 0 rgba(255,30,90,.85)) drop-shadow(8px 0 0 rgba(0,235,255,.85))}
+  65%,100%{filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(-6px 22px 34px rgba(0,0,0,.6))}}
+@media (prefers-reduced-motion: reduce){.ab-word,.ab-cut,.ab-floor,.ab-pt{opacity:1!important;animation:none!important}}
 /* ---------- Shows ---------- */
 .sh-row{transition:background .2s ease}
 .sh-row:hover{background:rgba(255,106,43,0.08)}
@@ -148,7 +197,7 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
   <section id="live" style="max-width: 1360px; margin: 0 auto; padding: clamp(36px, 4vw, 64px) clamp(16px, 4vw, 40px) clamp(24px, 4vw, 48px); display: flex; flex-direction: column; gap: 32px">
     <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Live</h2>
     <div class="lv-grid">
-      <figure class="lv"><video class="lv-v" src="./assets/loops/decks.mp4" poster="./assets/loops/decks.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH mixing on Pioneer decks"></video></figure>
+      <figure class="lv on"><video class="lv-v" src="./assets/loops/decks.mp4" poster="./assets/loops/decks.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH mixing on Pioneer decks"></video></figure>
       <figure class="lv"><img src="./assets/live/green2.jpg" alt="NOVUH crouched in the Vanguard hallway in Orlando" loading="lazy"></figure>
       <figure class="lv"><video class="lv-v" src="./assets/loops/crowd.mp4" poster="./assets/loops/crowd.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH silhouetted at the decks facing the crowd"></video></figure>
       <figure class="lv"><img src="./assets/live/green1.jpg" alt="NOVUH under green and blue lasers" loading="lazy"></figure>
@@ -157,6 +206,13 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
       <figure class="lv"><img src="./assets/live/green3.jpg" alt="NOVUH at the decks under club lights" loading="lazy"></figure>
       <figure class="lv"><video class="lv-v" src="./assets/loops/room.mp4" poster="./assets/loops/room.jpg" muted loop playsinline preload="metadata" aria-label="NOVUH at the decks facing a packed room"></video></figure>
     </div>
+  </section>
+  <section aria-label="Meteor shower live visual" class="mt">
+    <video class="mt-v" muted loop playsinline preload="none" poster="./assets/loops/meteor.jpg?v=2" aria-label="NOVUH meteor shower live visual: meteors crash across a lunar plain behind the glowing NOVUH logo">
+      <source src="./assets/loops/meteor-640.mp4?v=2" type="video/mp4" media="(max-width: 760px)">
+      <source src="./assets/loops/meteor-1280.mp4?v=2" type="video/mp4">
+    </video>
+    <span class="mt-tag">Live visual · Meteor shower</span>
   </section>
 
   <section id="flight" style="max-width: 1360px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 32px">
@@ -210,7 +266,9 @@ a{color:#F4F1EA}a:hover{color:#FF6A2B}
   <section id="crew" style="position: relative; overflow: hidden; padding-top: clamp(48px, 6vw, 80px)">
     <div class="ab-stage">
       <svg class="ab-word" viewBox="510 480 1540 505" aria-hidden="true"><path fill-rule="evenodd" d="{{wm}}"></path></svg>
-      <img class="ab-cut" src="./assets/novuh-cutout.png" alt="NOVUH standing in a black tee and camo cargos" loading="lazy">
+      <canvas class="ab-pt" aria-hidden="true"></canvas>
+      <div class="ab-floor" aria-hidden="true"></div>
+      <img class="ab-cut" src="./assets/novuh-cutout.png?v=2" alt="NOVUH standing in a black tee and camo cargos" loading="lazy">
     </div>
     <div style="position: relative; max-width: 1360px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px) clamp(64px, 8vw, 112px); display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-start">
       <h2 style="flex: 1 1 380px; margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(40px, 5vw, 72px); line-height: 0.92; text-transform: uppercase">Sets built like journeys</h2>
@@ -271,6 +329,6 @@ class Component extends DCLogic {
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./space.js?v=9"></script>
+<script type="module" src="./space.js?v=12"></script>
 </body>
 </html>
