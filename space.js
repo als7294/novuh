@@ -18,7 +18,7 @@ const live = (id) => [...document.querySelectorAll('#' + id)].find((el) => !el.c
    Background: deep-space shader (stars, Milky Way, nebula, planet limb)
    ===================================================================== */
 const BG_FRAG = /* glsl */`
-uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uScroll; uniform float uHero; uniform float uPx;
+uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uScroll; uniform float uHero; uniform float uPx; uniform float uLimb;
 float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
   return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}
@@ -70,7 +70,7 @@ void main(){
   st+=stars(fc+vec2(0.,uScroll*.1)+par*16.*uPx,23.*uPx,(.10+.32*band)*sAll,7.)*.8;
   st+=stars(fc+vec2(0.,uScroll*.22)+par*38.*uPx,64.*uPx,.15,13.);
   /* planet limb at the foot of the hero, sunrise on the edge */
-  float k=1.-smoothstep(uHero*.72,uHero*1.02,uScroll); // rim scrolls up with the page and only fades as it reaches the top
+  float k=(1.-smoothstep(uHero*.72,uHero*1.02,uScroll))*uLimb; // rim scrolls up with the page and only fades as it reaches the top
   float R=2.6*res.y;
   float limbY=res.y-(uHero-36.*uPx-uScroll);
   vec2 c=vec2(res.x*.5-par.x*14.*uPx,limbY-R);
@@ -109,7 +109,7 @@ function startBackground() {
   const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const u = {
     uRes: { value: new THREE.Vector2() }, uTime: { value: 0 }, uMouse: { value: new THREE.Vector2() },
-    uScroll: { value: 0 }, uHero: { value: 800 }, uPx: { value: 1 },
+    uScroll: { value: 0 }, uHero: { value: 800 }, uPx: { value: 1 }, uLimb: { value: PHONE ? 0 : 1 },
   };
   scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
     uniforms: u, depthTest: false, depthWrite: false, defines: { OCT: PHONE ? 4 : 6 },
@@ -121,12 +121,12 @@ function startBackground() {
   let dirty = true;
   const size = () => { r.setPixelRatio(pr); r.setSize(cv.clientWidth, cv.clientHeight, false); u.uRes.value.set(cv.width, cv.height); u.uPx.value = cv.height / Math.max(1, cv.clientHeight); dirty = true; };
   size(); onWidthResize(size);
-  addEventListener('scroll', () => { dirty = true; }, { passive: true });
+  if (!PHONE) addEventListener('scroll', () => { dirty = true; }, { passive: true });
   const mt = new THREE.Vector2();
   addEventListener('pointermove', (e) => mt.set(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5));
   const t0 = performance.now();
   const loop = (now) => {
-    // phones: no idle redraw (no twinkle); only re-render when the scroll moves the planet rim
+    // phones: static sky (no twinkle, rim is CSS) so it only renders on load and width changes
     if (PHONE && !dirty) { requestAnimationFrame(loop); return; }
     dirty = false;
     const hero = live('top');
@@ -194,6 +194,9 @@ function startLoops() {
     if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
   }), { rootMargin: '200px' });
   vids.forEach((v) => { v.muted = true; v.setAttribute('muted', ''); io.observe(v); });
+  // iOS can refuse muted autoplay (Low Power Mode etc.); the first tap anywhere starts whatever is on screen
+  const kick = () => document.querySelectorAll('video').forEach((v) => { const r = v.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth) v.play().catch(() => {}); });
+  ['touchend', 'click'].forEach((ev) => addEventListener(ev, kick, { passive: true }));
   // accordion: hover picks a slice, otherwise it cycles on its own
   const tiles = [...document.querySelectorAll('.lv')].filter((t) => !t.closest('x-dc'));
   const pick = (i) => { tiles.forEach((t, k) => t.classList.toggle('on', k === i)); };

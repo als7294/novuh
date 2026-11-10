@@ -9,7 +9,7 @@
 <meta property="og:image" content="assets/700965a6e2411c5c31618b7b2408ba24.jpg">
 <script>/* always land on the hero: no restored scroll, no jump to a #section */if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);scrollTo(0,0);addEventListener('load',function(){scrollTo(0,0)});/* phones skip the launch intro entirely */if(Math.min(innerWidth,innerHeight)<760)document.documentElement.classList.add('nv-phone');document.documentElement.style.setProperty('--rd','999s');setTimeout(function(){if(!window.__nvDone){document.documentElement.style.setProperty('--rd','0s');var o=document.getElementById('nv-intro');if(o)o.style.display='none';}},8000);</script>
 <title>NOVUH — Full site</title>
-<link rel="modulepreload" href="./app.js?v=3">
+<link rel="modulepreload" href="./app.js?v=4">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'"><noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet"></noscript>
@@ -165,6 +165,33 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
   .lg-pt,.ab-pt{display:none}
 }
 .nv-phone #nv-intro{display:none!important}
+/* phones: clean load — the logo resolves first, then everything else fades in (no blur: it's expensive on mobile GPUs) */
+.nv-phone .d2{animation:nv-logo-soft 1.1s cubic-bezier(.2,.8,.2,1) var(--rd,0s) both}
+@keyframes nv-logo-soft{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
+.nv-phone .nv-rise:not(.d2){animation-name:nv-fade-up;animation-duration:.8s}
+@keyframes nv-fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.nv-phone .hz-limb,.nv-phone .mq,.nv-phone #top ~ section,.nv-phone footer{opacity:0;animation:nv-fade-in .9s ease calc(var(--rd,0s) + 1.35s) both}
+@keyframes nv-fade-in{to{opacity:1}}
+.nv-phone #nv-bg{animation:nv-fade-in 1s ease both}
+/* phones: the planet rim is a plain element inside the hero so it scrolls natively (the shader version lagged on iOS) */
+.hz-limb{display:none}
+@media (max-width:760px){
+  .hz-limb{display:block;position:absolute;left:50%;top:calc(100% - 34px);width:330vw;height:330vw;margin-left:-165vw;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 50% 0,#0b1426 0,#04060c 9%,#020203 30%);
+    box-shadow:0 -1px 0 rgba(214,232,255,.9),0 -4px 14px rgba(110,160,255,.5),0 -18px 50px rgba(70,120,255,.28),0 -60px 120px rgba(90,70,255,.14)}
+  .hz-limb::after{content:'';position:absolute;left:58%;top:-34px;width:220px;height:68px;margin-left:-110px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(255,236,214,.95),rgba(255,150,80,.45) 35%,rgba(255,120,60,0));filter:blur(2px)}
+  .mq-viewport{-webkit-mask-image:none;mask-image:none}
+  .mq-track{gap:34px;padding:12px 0;animation-duration:30s}
+  @keyframes mq-scroll{to{transform:translateX(calc(-50% - 17px))}}
+  .mq-item{height:40px}
+  .mq-item img{height:22px;max-width:120px}
+  .mq-item img.h-tall{height:30px}
+  .mq-item img.mq-ritz{height:32px;margin-bottom:-8px}
+  .mq-script{font-size:24px}
+  .mq-caps{font-size:18px}
+  .mq-caps small{font-size:11px}
+}
 /* ---------- Shows ---------- */
 .sh-next{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:clamp(28px,3vw,40px) clamp(20px,3vw,40px) clamp(24px,3vw,36px);margin:0 0 28px;
   background:linear-gradient(120deg,rgba(91,60,255,.22),rgba(155,77,255,.12) 50%,rgba(214,91,255,.2)),rgba(8,6,16,.7);
@@ -218,6 +245,7 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
   </header>
 
   <section id="top" style="position: relative; overflow: hidden; min-height: max(720px, 100vh); display: flex; flex-direction: column">
+    <div class="hz-limb" aria-hidden="true"></div>
 
     <div style="position: relative; flex: 1; width: 100%; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 24px clamp(16px, 4vw, 40px) 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; text-align: center">
       <div class="nv-rise d2" style="position: relative; width: min(100%, 1000px); perspective: 1400px">
@@ -312,16 +340,16 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
   <section id="live" style="max-width: 1360px; margin: 0 auto; padding: clamp(36px, 4vw, 64px) clamp(16px, 4vw, 40px) clamp(24px, 4vw, 48px); display: flex; flex-direction: column; gap: 32px">
     <h2 style="margin: 0; font-stretch: 62%; font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.9; text-transform: uppercase">Live</h2>
     <div class="lv-grid">
-      <figure class="lv on"><video class="lv-v" src="./assets/loops/room.mp4?v=2" poster="./assets/loops/room.jpg?v=3" muted loop playsinline preload="none" aria-label="NOVUH at the decks facing a packed room"></video></figure>
+      <figure class="lv on"><video class="lv-v" src="./assets/loops/room.mp4?v=2" poster="./assets/loops/room.jpg?v=3" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="none" aria-label="NOVUH at the decks facing a packed room"></video></figure>
       <figure class="lv"><picture><source srcset="./assets/live/green2.avif" type="image/avif"><img src="./assets/live/green2.jpg" alt="NOVUH crouched in the Vanguard hallway in Orlando" loading="lazy" decoding="async"></picture></figure>
       <figure class="lv"><picture><source srcset="./assets/live/green1.avif" type="image/avif"><img src="./assets/live/green1.jpg" alt="NOVUH under green and blue lasers" loading="lazy" decoding="async"></picture></figure>
       <figure class="lv"><picture><source srcset="./assets/live/purple1.avif" type="image/avif"><img src="./assets/live/purple1.jpg" alt="NOVUH with hands up behind the decks in purple light" loading="lazy" decoding="async"></picture></figure>
-      <figure class="lv"><video class="lv-v" src="./assets/loops/stage.mp4?v=2" poster="./assets/loops/stage.jpg?v=3" muted loop playsinline preload="none" aria-label="Stage lights sweeping the room"></video></figure>
+      <figure class="lv"><video class="lv-v" src="./assets/loops/stage.mp4?v=2" poster="./assets/loops/stage.jpg?v=3" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="none" aria-label="Stage lights sweeping the room"></video></figure>
       <figure class="lv"><picture><source srcset="./assets/live/green3.avif" type="image/avif"><img src="./assets/live/green3.jpg" alt="NOVUH at the decks under club lights" loading="lazy" decoding="async"></picture></figure>
     </div>
   </section>
   <section aria-label="Meteor shower live visual" class="mt">
-    <video class="mt-v" muted loop playsinline preload="none" data-poster="./assets/loops/meteor.jpg?v=3" aria-label="NOVUH meteor shower live visual: meteors crash across a lunar plain behind the glowing NOVUH logo">
+    <video class="mt-v" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="none" data-poster="./assets/loops/meteor.jpg?v=3" aria-label="NOVUH meteor shower live visual: meteors crash across a lunar plain behind the glowing NOVUH logo">
       <source src="./assets/loops/meteor-640.mp4?v=2" type="video/mp4" media="(max-width: 760px)">
       <source src="./assets/loops/meteor-1280.mp4?v=2" type="video/mp4">
     </video>
@@ -406,6 +434,6 @@ a{color:#F4F1EA}a:hover{color:#C49BFF}
 <div id="nv-intro" aria-hidden="true" style="position:fixed;inset:0;z-index:100;background:#020203;overflow:hidden;pointer-events:none;will-change:opacity,transform">
 <canvas id="nv-intro-c" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
 </div>
-<script type="module" src="./app.js?v=3"></script>
+<script type="module" src="./app.js?v=4"></script>
 </body>
 </html>
